@@ -15,10 +15,10 @@ module.exports = {
     },
   },
   rules: {
-    'semi': [2, 'always'],
-    'object-curly-spacing': [2, 'always'],
-    'space-in-parens': [2, 'never'],
-    'quotes': [2, 'single', { avoidEscape: true }],
-    'jsx-quotes': [2, 'prefer-single'],
+    'semi': ['error', 'always'],
+    'object-curly-spacing': ['error', 'always'],
+    'space-in-parens': ['error', 'never'],
+    'quotes': ['error', 'single', { avoidEscape: true }],
+    'jsx-quotes': ['error', 'prefer-single'],
   },
 };
