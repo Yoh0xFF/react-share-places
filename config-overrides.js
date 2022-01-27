@@ -2,7 +2,7 @@ const { alias } = require('react-app-rewire-alias');
 
 module.exports = function override(config) {
   alias({
-    '@ui': 'src/ui',
+    '@app': 'src',
   })(config);
 
   return config;
