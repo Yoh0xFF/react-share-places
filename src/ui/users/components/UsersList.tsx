@@ -1,6 +1,6 @@
 import React from 'react';
 import './UsersList.css';
-import {User} from '@app/type/user';
+import { User } from '@app/type/user';
 import UserItem from '@app/ui/users/components/UserItem';
 
 interface UsersListProps {
