@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import Users from '@app/ui/users/pages/Users';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+
 import Places from '@app/ui/places/pages/Places';
+import Users from '@app/ui/users/pages/Users';
 
 function App(): JSX.Element {
   return (

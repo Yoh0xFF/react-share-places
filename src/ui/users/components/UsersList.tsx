@@ -1,8 +1,10 @@
 import React from 'react';
+
 import './UsersList.css';
+
 import { User } from '@app/type/user';
-import UserItem from '@app/ui/users/components/UserItem';
 import Card from '@app/ui/shared/components/ui-elements/Card';
+import UserItem from '@app/ui/users/components/UserItem';
 
 interface UsersListProps {
   items: Array<User>;

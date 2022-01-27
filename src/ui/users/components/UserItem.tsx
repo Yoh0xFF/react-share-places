@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import './UserItem.css';
+
 import { User } from '@app/type/user';
 import Avatar from '@app/ui/shared/components/ui-elements/Avatar';
-import { Link } from 'react-router-dom';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 
 interface UserItemProps {
