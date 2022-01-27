@@ -1,28 +1,33 @@
 import React from 'react';
 import './UserItem.css';
 import {User} from '@app/type/user';
+import Avatar from "@app/ui/shared/components/ui-elements/Avatar";
+import {Link} from 'react-router-dom';
+import Card from '@app/ui/shared/components/ui-elements/Card';
 
 interface UserItemProps {
   user: User;
 }
 
 export default function UserItem(props: UserItemProps): JSX.Element {
-  const { user } = props;
+  const {user} = props;
 
   return (
     <li className='user-item'>
-      <div className='user-item__content'>
-        <div className='user-item__image'>
-          <img src={user.image} alt={user.name}/>
-        </div>
+      <Card className='user-item__content'>
+        <Link to={`/${user.id}/places`}>
+          <div className='user-item__image'>
+            <Avatar image={user.image} alt={user.name}/>
+          </div>
 
-        <div className='user-item__name'>
-          <h2>{user.name}</h2>
-          <h3>
-            {user.places} {user.places === 1 ? 'place' : 'places'}
-          </h3>
-        </div>
-      </div>
+          <div className='user-item__name'>
+            <h2>{user.name}</h2>
+            <h3>
+              {user.places} {user.places === 1 ? 'place' : 'places'}
+            </h3>
+          </div>
+        </Link>
+      </Card>
     </li>
   );
 }
