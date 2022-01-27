@@ -1,7 +1,7 @@
 import React from 'react';
 import './UserItem.css';
 import { User } from '@app/type/user';
-import Avatar from "@app/ui/shared/components/ui-elements/Avatar";
+import Avatar from '@app/ui/shared/components/ui-elements/Avatar';
 import { Link } from 'react-router-dom';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 
@@ -17,7 +17,7 @@ export default function UserItem(props: UserItemProps): JSX.Element {
       <Card className='user-item__content'>
         <Link to={`/${user.id}/places`}>
           <div className='user-item__image'>
-            <Avatar image={user.image} alt={user.name}/>
+            <Avatar image={user.image} alt={user.name} />
           </div>
 
           <div className='user-item__name'>
