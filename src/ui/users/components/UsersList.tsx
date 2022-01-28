@@ -15,7 +15,9 @@ export default function UsersList(props: UsersListProps): JSX.Element {
     return (
       <div className='center'>
         <Card>
-          <h2>No users found.</h2>
+          <div className='users-list-empty'>
+            <h2>No users found.</h2>
+          </div>
         </Card>
       </div>
     );
