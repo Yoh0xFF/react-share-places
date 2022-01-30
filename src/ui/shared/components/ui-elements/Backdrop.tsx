@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 
@@ -10,15 +10,18 @@ interface BackdropProps {
 }
 
 export default function Backdrop(props: BackdropProps): JSX.Element {
+  const nodeRef = useRef(null);
+
   const content = (
     <CSSTransition
+      nodeRef={nodeRef}
       in={props.show}
       timeout={200}
       classNames='fade-in'
       mountOnEnter
       unmountOnExit
     >
-      <div className='backdrop' onClick={props.onClick} />
+      <div ref={nodeRef} className='backdrop' onClick={props.onClick} />
     </CSSTransition>
   );
   const portal = document.getElementById('backdrop-hook');

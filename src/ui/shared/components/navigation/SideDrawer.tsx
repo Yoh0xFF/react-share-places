@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 
@@ -11,15 +11,18 @@ interface SideDrawerProps {
 }
 
 export default function SideDrawer(props: SideDrawerProps): JSX.Element {
+  const nodeRef = useRef(null);
+
   const content = (
     <CSSTransition
+      nodeRef={nodeRef}
       in={props.show}
       timeout={200}
       classNames='slide-in-left'
       mountOnEnter
       unmountOnExit
     >
-      <aside className='side-drawer' onClick={props.onClick}>
+      <aside ref={nodeRef} className='side-drawer' onClick={props.onClick}>
         {props.children}
       </aside>
     </CSSTransition>
