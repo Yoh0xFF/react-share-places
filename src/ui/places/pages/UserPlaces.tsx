@@ -15,7 +15,7 @@ const data: Array<Place> = [
     address: '20 W 34th St, New York, NY 10001, United States',
     location: {
       lat: 40.7484405,
-      lgt: -73.9878531,
+      lng: -73.9878531,
     },
   },
   {
@@ -28,7 +28,7 @@ const data: Array<Place> = [
     address: '20 W 34th St, New York, NY 10001, United States',
     location: {
       lat: 40.7484405,
-      lgt: -73.9878531,
+      lng: -73.9878531,
     },
   },
 ];
@@ -37,7 +37,7 @@ export default function UserPlaces(): JSX.Element {
   const params = useParams();
   const userId = params.userId ? parseInt(params.userId, 10) : 0;
 
-  const places: Array<Place> = data.filter((x) => x.creator == userId);
+  const places: Array<Place> = data.filter((x) => x.creator === userId);
 
   return <PlaceList items={places} />;
 }

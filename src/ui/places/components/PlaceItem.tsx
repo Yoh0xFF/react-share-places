@@ -5,6 +5,7 @@ import './PlaceItem.css';
 import { Place } from '@app/type/place';
 import Button from '@app/ui/shared/components/form-elements/Button';
 import Card from '@app/ui/shared/components/ui-elements/Card';
+import Map from '@app/ui/shared/components/ui-elements/Map';
 import Modal from '@app/ui/shared/components/ui-elements/Modal';
 
 interface PlaceItemProps {
@@ -28,7 +29,7 @@ export default function PlaceItem(props: PlaceItemProps): JSX.Element {
         footer={<Button onClick={toggleMapHandler}>CLOSE</Button>}
       >
         <div className='map-container'>
-          <h2>THE MAP!</h2>
+          <Map center={place.location} zoom={16} />
         </div>
       </Modal>
       <li className='place-item'>

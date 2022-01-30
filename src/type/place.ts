@@ -11,6 +11,6 @@ export interface Place {
   address: string;
   location: {
     lat: number;
-    lgt: number;
+    lng: number;
   };
 }
