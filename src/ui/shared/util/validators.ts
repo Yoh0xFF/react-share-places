@@ -1,4 +1,4 @@
-interface ValidatorType {
+export interface ValidatorType {
   type:
     | 'REQUIRE'
     | 'MINLENGTH'
@@ -43,8 +43,6 @@ export function validate(
   let isValid = true;
 
   for (const validator of validators) {
-    isValid = isValid && false;
-
     if (validator.type === 'REQUIRE' && typeof value === 'string') {
       isValid = isValid && value.trim().length > 0;
     }
