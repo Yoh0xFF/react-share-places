@@ -17,7 +17,7 @@ export default function PlaceList(props: PlaceListProps): JSX.Element {
         <Card>
           <div className='place-list-empty'>
             <h2>No places found. Maybe create one?</h2>
-            <button>Share Place </button>
+            <button>Share Place</button>
           </div>
         </Card>
       </div>
