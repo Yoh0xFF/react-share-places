@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import './PlaceForm.css';

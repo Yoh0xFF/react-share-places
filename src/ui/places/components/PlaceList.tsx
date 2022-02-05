@@ -4,6 +4,7 @@ import './PlaceList.css';
 
 import { Place } from '@app/type/place';
 import PlaceItem from '@app/ui/places/components/PlaceItem';
+import Button from '@app/ui/shared/components/form-elements/Button';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 
 interface PlaceListProps {
@@ -15,9 +16,9 @@ export default function PlaceList(props: PlaceListProps): JSX.Element {
     return (
       <div className='center'>
         <Card>
-          <div className='place-list-empty'>
+          <div className='content-padding'>
             <h2>No places found. Maybe create one?</h2>
-            <button>Share Place</button>
+            <Button to='/places/new'>Share Place</Button>
           </div>
         </Card>
       </div>
