@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import './PlaceItem.css';
 
@@ -7,12 +7,14 @@ import Button from '@app/ui/shared/components/form-elements/Button';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 import Map from '@app/ui/shared/components/ui-elements/Map';
 import Modal from '@app/ui/shared/components/ui-elements/Modal';
+import { AuthContext } from '@app/ui/shared/context/auth-context';
 
 interface PlaceItemProps {
   place: Place;
 }
 
 export default function PlaceItem(props: PlaceItemProps): JSX.Element {
+  const auth = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { place } = props;
@@ -79,10 +81,16 @@ export default function PlaceItem(props: PlaceItemProps): JSX.Element {
             <Button inverse onClick={toggleMapHandler}>
               VIEW ON MAP
             </Button>
-            <Button to={`/places/${place.id}`}>EDIT</Button>
-            <Button danger onClick={toggleShowConfirmHandler}>
-              DELETE
-            </Button>
+
+            {auth.isLoggedIn && (
+              <Button to={`/places/${place.id}`}>EDIT</Button>
+            )}
+
+            {auth.isLoggedIn && (
+              <Button danger onClick={toggleShowConfirmHandler}>
+                DELETE
+              </Button>
+            )}
           </div>
         </Card>
       </li>
