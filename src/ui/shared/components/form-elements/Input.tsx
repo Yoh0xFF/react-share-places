@@ -42,6 +42,8 @@ interface InputProps {
 
   id: string;
   label: string;
+  initialValue?: string;
+  initialValid?: boolean;
   placeholder?: string;
   errorText?: string;
   validators?: Array<ValidatorType>;
@@ -54,8 +56,8 @@ interface InputProps {
 
 export default function Input(props: InputProps): JSX.Element {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: '',
-    isValid: false,
+    value: props.initialValue || '',
+    isValid: props.initialValid || false,
     isTouched: false,
   });
 
