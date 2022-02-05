@@ -53,9 +53,7 @@ export default function UpdatePlace(): JSX.Element {
     return (
       <div className='center'>
         <Card>
-          <div className='content-padding'>
-            <h2>Couldn't find the place!</h2>
-          </div>
+          <h2>Couldn't find the place!</h2>
         </Card>
       </div>
     );

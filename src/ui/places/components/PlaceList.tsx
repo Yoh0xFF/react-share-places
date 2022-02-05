@@ -16,10 +16,8 @@ export default function PlaceList(props: PlaceListProps): JSX.Element {
     return (
       <div className='center'>
         <Card>
-          <div className='content-padding'>
-            <h2>No places found. Maybe create one?</h2>
-            <Button to='/places/new'>Share Place</Button>
-          </div>
+          <h2>No places found. Maybe create one?</h2>
+          <Button to='/places/new'>Share Place</Button>
         </Card>
       </div>
     );
