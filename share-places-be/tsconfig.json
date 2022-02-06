@@ -10,8 +10,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"],
-      "@app/*": ["src/*"]
+      "*": ["node_modules/*"]
     }
   },
   "include": [

@@ -1,6 +1,6 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
 
-import { Place } from '@app/type/place';
+import { Place } from '../type/place';
 
 const router = Router();
 
@@ -35,14 +35,15 @@ const fakePlaces: Array<Place> = [
 
 router.get('/:placeId', (req, res) => {
   const placeIdStr = req.params.placeId;
-  const placeId = placeIdStr ? parseInt(placeIdStr, 10) : 0;
+  const placeId =
+    placeIdStr && !isNaN(+placeIdStr) ? parseInt(placeIdStr, 10) : 0;
 
   const place = fakePlaces.find((x) => x.id === placeId);
 
   if (place) {
     res.send(place);
   } else {
-    res.status(404).send({});
+    res.status(404).send({ message: `Place with id ${placeId}, Not found!` });
   }
 });
 

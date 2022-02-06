@@ -1,8 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import path from 'path';
 
-import indexRouter from '@app/api';
-import placesRouter from '@app/api/places-routes';
+import indexRouter from './api';
+import placesRouter from './api/places-routes';
 
 const app = express();
 

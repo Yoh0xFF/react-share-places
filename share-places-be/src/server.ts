@@ -1,6 +1,5 @@
 import errorHandler from 'errorhandler';
 import http from 'http';
-import 'module-alias/register';
 
 import app from './app';
 
