@@ -1,8 +1,9 @@
 import express, { NextFunction, Request, Response } from 'express';
 import path from 'path';
 
-import indexRouter from './api';
-import placesRouter from './api/places-routes';
+import { AppError } from './models/error';
+import indexRouter from './routes';
+import placesRouter from './routes/places-routes';
 
 const app = express();
 
@@ -14,17 +15,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
-app.use('/api/places', placesRouter);
+app.use('/routes/places', placesRouter);
 
 // error handler
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use((error: AppError, req: Request, res: Response, next: NextFunction) => {
+  // Skip if response is already sent
+  if (res.headersSent) {
+    return next(error);
+  }
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(error.code || 500);
+  res.json({ message: error.message || 'Internal server error.' });
 });
 
 export default app;

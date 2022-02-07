@@ -1,8 +1,7 @@
-import { Router } from 'express';
+import { Request, Response } from 'express';
 
-import { Place } from '../type/place';
-
-const router = Router();
+import { AppError } from '../models/error';
+import { Place } from '../models/place';
 
 const fakePlaces: Array<Place> = [
   {
@@ -33,18 +32,27 @@ const fakePlaces: Array<Place> = [
   },
 ];
 
-router.get('/:placeId', (req, res) => {
+export function getPlaceById(req: Request, res: Response) {
   const placeIdStr = req.params.placeId;
   const placeId =
     placeIdStr && !isNaN(+placeIdStr) ? parseInt(placeIdStr, 10) : 0;
 
   const place = fakePlaces.find((x) => x.id === placeId);
 
-  if (place) {
-    res.send(place);
-  } else {
-    res.status(404).send({ message: `Place with id ${placeId}, Not found!` });
+  if (!place) {
+    throw new AppError(404, `Place with id ${placeId}, Not found!`);
   }
-});
 
-export default router;
+  res.send(place);
+}
+
+export function getPacesByUserId(req: Request, res: Response) {
+  const userIdStr = req.params.userId;
+  const userId = userIdStr && !isNaN(+userIdStr) ? parseInt(userIdStr, 10) : 0;
+
+  const places = fakePlaces.filter((x) => x.id === userId);
+
+  res.send(places);
+}
+
+export function createPlace(req: Request, res: Response) {}
