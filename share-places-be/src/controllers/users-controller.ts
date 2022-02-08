@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import { v4 as uuid } from 'uuid';
 
 import { AppError } from '../models/error';
@@ -21,6 +22,12 @@ export function getUsers(req: Request, res: Response) {
 }
 
 export function signup(req: Request, res: Response) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new AppError(422, 'Invalid inputs!');
+  }
+
   const {
     name,
     email,
@@ -47,6 +54,12 @@ export function signup(req: Request, res: Response) {
 }
 
 export function login(req: Request, res: Response) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new AppError(422, 'Invalid inputs!');
+  }
+
   const { email, password }: { email: string; password: string } = req.body;
 
   const user = fakeUsers.find((x) => x.email === email);

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import { v4 as uuid } from 'uuid';
 
 import { AppError } from '../models/error';
@@ -54,6 +55,12 @@ export function getPacesByUserId(req: Request, res: Response) {
 }
 
 export function createPlace(req: Request, res: Response) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new AppError(422, 'Invalid inputs!');
+  }
+
   const {
     creator,
     title,
@@ -86,6 +93,12 @@ export function createPlace(req: Request, res: Response) {
 }
 
 export function updatePlace(req: Request, res: Response) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new AppError(422, 'Invalid inputs!');
+  }
+
   const placeId = req.params.placeId;
 
   const {
