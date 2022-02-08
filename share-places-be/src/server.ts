@@ -1,5 +1,6 @@
 import errorHandler from 'errorhandler';
 import http from 'http';
+import mongoose from 'mongoose';
 
 import app from './app';
 
@@ -16,18 +17,33 @@ app.use(errorHandler());
 // Create and run the server
 const server = http.createServer(app);
 
-server.listen(port);
+// Connect to the mongodb and start express server.
+const mongodbUser = process.env.MONGODB_ATLAS_USER;
+const mongodbPass = process.env.MONGODB_ATLAS_PASS;
+const mongodbDatabase = 'share-places';
+const mongodbUrl = `mongodb+srv://${mongodbUser}:${mongodbPass}@cluster0.ayq7c.mongodb.net/${mongodbDatabase}?retryWrites=true&w=majority`;
 
-server.on('error', (error) => {
-  console.log('Http server failed', error);
-});
+mongoose
+  .connect(mongodbUrl)
+  .then(() => {
+    console.log('Mongoose connected successfully');
 
-server.on('listening', () => {
-  console.log(
-    'App is running at http://localhost:%d in %s mode',
-    app.get('port'),
-    app.get('env')
-  );
+    server.listen(port);
 
-  console.log('Press CTRL-C to stop\n');
-});
+    server.on('error', (error) => {
+      console.log('Http server failed', error);
+    });
+
+    server.on('listening', () => {
+      console.log(
+        'App is running at http://localhost:%d in %s mode',
+        app.get('port'),
+        app.get('env')
+      );
+
+      console.log('Press CTRL-C to stop\n');
+    });
+  })
+  .catch((error) => {
+    console.log('Mongoose failed to connect to cluster', error);
+  });
