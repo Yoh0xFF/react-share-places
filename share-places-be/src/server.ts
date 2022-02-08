@@ -1,8 +1,8 @@
 import errorHandler from 'errorhandler';
 import http from 'http';
-import mongoose, { Schema } from 'mongoose';
 
 import app from './app';
+import { connectDatabase } from './utils/mongoose-utils';
 
 // Do not reject self signed certificates
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -18,13 +18,7 @@ app.use(errorHandler());
 const server = http.createServer(app);
 
 // Connect to the mongodb and start express server.
-const mongodbUser = process.env.MONGODB_ATLAS_USER;
-const mongodbPass = process.env.MONGODB_ATLAS_PASS;
-const mongodbDatabase = 'share-places';
-const mongodbUrl = `mongodb+srv://${mongodbUser}:${mongodbPass}@cluster0.ayq7c.mongodb.net/${mongodbDatabase}?retryWrites=true&w=majority`;
-
-mongoose
-  .connect(mongodbUrl)
+connectDatabase()
   .then(() => {
     console.log('Mongoose connected successfully');
 

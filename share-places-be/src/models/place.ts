@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-import { reshapingOptions } from '../utils/mongoose-schema';
+import { reshapingOptions } from '../utils/mongoose-utils';
 
 export interface Place {
   id: string;
