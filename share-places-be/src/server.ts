@@ -1,6 +1,6 @@
 import errorHandler from 'errorhandler';
 import http from 'http';
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 import app from './app';
 

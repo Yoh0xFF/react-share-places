@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import { v4 as uuid } from 'uuid';
 
 import { AppError } from '../models/error';
-import { Place } from '../models/place';
+import { Place, PlaceModel } from '../models/place';
 import { getCoordinatesForAddress } from '../utils/location';
 
 let fakePlaces: Array<Place> = [
@@ -35,24 +34,48 @@ let fakePlaces: Array<Place> = [
   },
 ];
 
-export function getPlaceById(req: Request, res: Response) {
+export async function getPlaceById(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const placeId = req.params.placeId;
 
-  const place = fakePlaces.find((x) => x.id === placeId);
-
-  if (!place) {
-    throw new AppError(404, `Place with id ${placeId}, Not found!`);
+  let place;
+  try {
+    place = await PlaceModel.findById(placeId);
+  } catch (error) {
+    console.log(error);
+    return next(
+      new AppError(500, 'Something went wrong, could not find a place')
+    );
   }
 
-  res.send({ place });
+  if (!place) {
+    return next(new AppError(404, `Place with id ${placeId}, Not found!`));
+  }
+
+  res.send({ place: place.toObject({ getters: true }) });
 }
 
-export function getPacesByUserId(req: Request, res: Response) {
+export async function getPacesByUserId(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const userId = req.params.userId;
 
-  const places = fakePlaces.filter((x) => x.id === userId);
+  let places;
+  try {
+    places = await PlaceModel.find({ creator: userId });
+  } catch (error) {
+    console.log(error);
+    return next(
+      new AppError(500, 'Fetching places failed, please try again later')
+    );
+  }
 
-  res.send({ places });
+  res.send({ places: places.map((x) => x.toObject({ getters: true })) });
 }
 
 export async function createPlace(
@@ -87,26 +110,34 @@ export async function createPlace(
     return next(error);
   }
 
-  const newPlace: Place = {
-    id: uuid(),
+  const newPlace = new PlaceModel({
     creator,
     title,
     imageUrl,
     description,
     address,
     location,
-  };
+  });
 
-  fakePlaces.push(newPlace);
+  try {
+    await newPlace.save();
+  } catch (error) {
+    console.log(error);
+    return next(new AppError(500, 'Creating place failed, please try again.'));
+  }
 
   res.status(201).send({ place: newPlace });
 }
 
-export function updatePlace(req: Request, res: Response) {
+export async function updatePlace(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
-    throw new AppError(422, 'Invalid inputs!');
+    return next(new AppError(422, 'Invalid inputs!'));
   }
 
   const placeId = req.params.placeId;
@@ -119,28 +150,46 @@ export function updatePlace(req: Request, res: Response) {
     description: string;
   } = req.body;
 
-  const place = fakePlaces.find((x) => x.id === placeId);
-  const placeIndex = fakePlaces.findIndex((x) => x.id === placeId);
-  if (!place) {
-    throw new AppError(404, `Place with id ${placeId}, Not found!`);
+  let place;
+  try {
+    place = await PlaceModel.findById(placeId);
+
+    if (!place) {
+      return next(new AppError(404, `Place with id ${placeId}, Not found!`));
+    }
+
+    place.title = title;
+    place.description = description;
+
+    await place.save();
+  } catch (error) {
+    console.log(error);
+    return next(new AppError(500, 'Updating place failed, please try again.'));
   }
 
-  const updatedPlace = { ...place };
-  updatedPlace.title = title;
-  updatedPlace.description = description;
-  fakePlaces[placeIndex] = updatedPlace;
-
-  res.status(200).send({ place: updatedPlace });
+  res.status(200).send({ place: place.toObject({ getters: true }) });
 }
 
-export function deletePlace(req: Request, res: Response) {
+export async function deletePlace(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const placeId = req.params.placeId;
 
-  const place = fakePlaces.find((x) => x.id === placeId);
-  if (!place) {
-    throw new AppError(404, `Place with id ${placeId}, Not found!`);
+  let place;
+  try {
+    place = await PlaceModel.findById(placeId);
+
+    if (!place) {
+      return next(new AppError(404, `Place with id ${placeId}, Not found!`));
+    }
+
+    await place.remove();
+  } catch (error) {
+    console.log(error);
+    return next(new AppError(500, 'Deleting place failed, please try again.'));
   }
 
-  fakePlaces = fakePlaces.filter((x) => x.id != placeId);
-  res.status(200).send({ place });
+  res.status(200).send({ place: place.toObject({ getters: true }) });
 }
