@@ -1,9 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { v4 as uuid } from 'uuid';
 
 import { AppError } from '../models/error';
 import { Place } from '../models/place';
+import { getCoordinatesForAddress } from '../utils/location';
 
 let fakePlaces: Array<Place> = [
   {
@@ -54,11 +55,15 @@ export function getPacesByUserId(req: Request, res: Response) {
   res.send({ places });
 }
 
-export function createPlace(req: Request, res: Response) {
+export async function createPlace(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
-    throw new AppError(422, 'Invalid inputs!');
+    return next(new AppError(422, 'Invalid inputs!'));
   }
 
   const {
@@ -67,15 +72,20 @@ export function createPlace(req: Request, res: Response) {
     imageUrl,
     description,
     address,
-    location,
   }: {
     creator: string;
     title: string;
     imageUrl: string;
     description: string;
     address: string;
-    location: Place['location'];
   } = req.body;
+
+  let location;
+  try {
+    location = await getCoordinatesForAddress(address);
+  } catch (error) {
+    return next(error);
+  }
 
   const newPlace: Place = {
     id: uuid(),
