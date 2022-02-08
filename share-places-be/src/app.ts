@@ -4,6 +4,7 @@ import path from 'path';
 import { AppError } from './models/error';
 import indexRouter from './routes';
 import placesRouter from './routes/places-routes';
+import usersRouter from './routes/users-routes';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/api/places', placesRouter);
+app.use('/api/users', usersRouter);
 
 // Handle unknown route
 app.use((req: Request, res: Response, next: NextFunction) => {

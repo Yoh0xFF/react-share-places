@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
+import { v4 as uuid } from 'uuid';
 
 import { AppError } from '../models/error';
 import { Place } from '../models/place';
 
 let fakePlaces: Array<Place> = [
   {
-    id: 1,
-    creator: 1,
+    id: 'b2e0955d-1e4d-45e4-870d-414df6c4bb95',
+    creator: '8ca36ac7-7eeb-4c74-b7f7-56de5e683664',
     title: 'Empire State Building',
     description: 'One of the most famous sky scrapers in the wordl!',
     imageUrl:
@@ -18,8 +19,8 @@ let fakePlaces: Array<Place> = [
     },
   },
   {
-    id: 2,
-    creator: 2,
+    id: 'c492646d-a0ff-4e8c-8bea-0e8c07ad85b2',
+    creator: '8ca36ac7-7eeb-4c74-b7f7-56de5e683664',
     title: 'Empire State Building',
     description: 'One of the most famous sky scrapers in the wordl!',
     imageUrl:
@@ -33,9 +34,7 @@ let fakePlaces: Array<Place> = [
 ];
 
 export function getPlaceById(req: Request, res: Response) {
-  const placeIdStr = req.params.placeId;
-  const placeId =
-    placeIdStr && !isNaN(+placeIdStr) ? parseInt(placeIdStr, 10) : 0;
+  const placeId = req.params.placeId;
 
   const place = fakePlaces.find((x) => x.id === placeId);
 
@@ -47,8 +46,7 @@ export function getPlaceById(req: Request, res: Response) {
 }
 
 export function getPacesByUserId(req: Request, res: Response) {
-  const userIdStr = req.params.userId;
-  const userId = userIdStr && !isNaN(+userIdStr) ? parseInt(userIdStr, 10) : 0;
+  const userId = req.params.userId;
 
   const places = fakePlaces.filter((x) => x.id === userId);
 
@@ -64,7 +62,7 @@ export function createPlace(req: Request, res: Response) {
     address,
     location,
   }: {
-    creator: number;
+    creator: string;
     title: string;
     imageUrl: string;
     description: string;
@@ -72,10 +70,8 @@ export function createPlace(req: Request, res: Response) {
     location: Place['location'];
   } = req.body;
 
-  const maxId = Math.max(...fakePlaces.map((x) => x.id));
-
   const newPlace: Place = {
-    id: maxId + 1,
+    id: uuid(),
     creator,
     title,
     imageUrl,
@@ -90,9 +86,7 @@ export function createPlace(req: Request, res: Response) {
 }
 
 export function updatePlace(req: Request, res: Response) {
-  const placeIdStr = req.params.placeId;
-  const placeId =
-    placeIdStr && !isNaN(+placeIdStr) ? parseInt(placeIdStr, 10) : 0;
+  const placeId = req.params.placeId;
 
   const {
     title,
@@ -117,9 +111,7 @@ export function updatePlace(req: Request, res: Response) {
 }
 
 export function deletePlace(req: Request, res: Response) {
-  const placeIdStr = req.params.placeId;
-  const placeId =
-    placeIdStr && !isNaN(+placeIdStr) ? parseInt(placeIdStr, 10) : 0;
+  const placeId = req.params.placeId;
 
   const place = fakePlaces.find((x) => x.id === placeId);
   if (!place) {
