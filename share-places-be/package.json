@@ -13,7 +13,8 @@
   "dependencies": {
     "errorhandler": "^1.5.1",
     "express": "^4.17.2",
-    "hbs": "^4.2.0"
+    "hbs": "^4.2.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^3.2.0",
