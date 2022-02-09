@@ -18,7 +18,7 @@ export async function getPlaceById(
   try {
     place = await PlaceModel.findById(placeId);
   } catch (error) {
-    console.log(error);
+    console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(
       new AppError(500, 'Something went wrong, could not find a place')
     );
@@ -38,17 +38,24 @@ export async function getPacesByUserId(
 ) {
   const userId = req.params.userId;
 
+  let user: UserDocument;
   let places: Array<PlaceDocument>;
   try {
-    places = await PlaceModel.find({ creator: userId });
+    user = await UserModel.findById(userId).populate('places');
+
+    if (!user) {
+      return next(new AppError(404, `User with id ${userId} not found`));
+    }
+
+    places = user.places as Array<PlaceDocument>;
   } catch (error) {
-    console.log(error);
+    console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(
       new AppError(500, 'Fetching places failed, please try again later')
     );
   }
 
-  res.send({ places: places.map((x) => x.toObject()) });
+  res.send({ places });
 }
 
 export async function createPlace(
@@ -80,6 +87,7 @@ export async function createPlace(
   try {
     location = await getCoordinatesForAddress(address);
   } catch (error) {
+    console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(error);
   }
 
@@ -108,7 +116,7 @@ export async function createPlace(
 
     await session.commitTransaction();
   } catch (error) {
-    console.log(error);
+    console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(new AppError(500, 'Creating place failed, please try again.'));
   }
 
@@ -149,7 +157,7 @@ export async function updatePlace(
 
     await place.save();
   } catch (error) {
-    console.log(error);
+    console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(new AppError(500, 'Updating place failed, please try again.'));
   }
 
@@ -181,7 +189,7 @@ export async function deletePlace(
 
     await session.commitTransaction();
   } catch (error) {
-    console.log(error);
+    console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(new AppError(500, 'Deleting place failed, please try again.'));
   }
 

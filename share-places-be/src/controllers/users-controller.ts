@@ -13,7 +13,7 @@ export async function getUsers(
   try {
     users = await UserModel.find({}, '-password');
   } catch (error) {
-    console.log(error);
+    console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(new AppError(500, 'Fetching users failed, please try again'));
   }
 
@@ -53,7 +53,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
 
     await newUser.save();
   } catch (error) {
-    console.log(error);
+    console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(new AppError(500, 'Creating user failed, please try again'));
   }
 
