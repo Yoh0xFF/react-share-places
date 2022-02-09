@@ -1,9 +1,8 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import { v4 as uuid } from 'uuid';
 
 import { AppError } from '../models/error';
-import { User } from '../models/user';
+import { User, UserModel } from '../models/user';
 
 export const fakeUsers: Array<User> = [
   {
@@ -17,15 +16,28 @@ export const fakeUsers: Array<User> = [
   },
 ];
 
-export function getUsers(req: Request, res: Response) {
-  res.send({ users: fakeUsers });
+export async function getUsers(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  let users;
+
+  try {
+    users = await UserModel.find({}, '-password');
+  } catch (error) {
+    console.log(error);
+    return next(new AppError(500, 'Fetching users failed, please try again'));
+  }
+
+  res.send({ users: users.map((x) => x.toObject()) });
 }
 
-export function signup(req: Request, res: Response) {
+export async function signup(req: Request, res: Response, next: NextFunction) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
-    throw new AppError(422, 'Invalid inputs!');
+    return next(new AppError(422, 'Invalid inputs'));
   }
 
   const {
@@ -34,41 +46,56 @@ export function signup(req: Request, res: Response) {
     password,
   }: { name: string; email: string; password: string } = req.body;
 
-  const existingUser = fakeUsers.find((x) => x.email === email);
-  if (existingUser) {
-    throw new AppError(422, 'Could not create user, email already exists.');
+  let newUser;
+  try {
+    const existingUser = await UserModel.findOne({ email: email });
+    if (existingUser) {
+      return next(
+        new AppError(422, 'Could not create user, email already exists')
+      );
+    }
+
+    newUser = new UserModel({
+      name,
+      email,
+      password,
+      image:
+        'https://cdn.icon-icons.com/icons2/2596/PNG/512/check_one_icon_155665.png',
+      places: 0,
+    });
+
+    await newUser.save();
+  } catch (error) {
+    console.log(error);
+    return next(new AppError(500, 'Creating user failed, please try again'));
   }
 
-  const newUser: User = {
-    id: uuid(),
-    name,
-    image: '',
-    places: 0,
-    email,
-    password,
-  };
-
-  fakeUsers.push(newUser);
-
-  res.status(201).send({ user: newUser });
+  res.status(201).send({ user: newUser.toObject() });
 }
 
-export function login(req: Request, res: Response) {
+export async function login(req: Request, res: Response, next: NextFunction) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
-    throw new AppError(422, 'Invalid inputs!');
+    return next(new AppError(422, 'Invalid inputs'));
   }
 
   const { email, password }: { email: string; password: string } = req.body;
 
-  const user = fakeUsers.find((x) => x.email === email);
-  if (!user) {
-    throw new AppError(401, 'Invalid credentials, email not found!');
-  }
-  if (user.password !== password) {
-    throw new AppError(401, "Invalid credentials, password doesn't match!");
+  try {
+    const user = await UserModel.findOne({ email: email });
+    if (!user) {
+      return next(new AppError(401, 'Invalid credentials, email not found'));
+    }
+    if (user.password !== password) {
+      return next(
+        new AppError(401, "Invalid credentials, password doesn't match!")
+      );
+    }
+  } catch (error) {
+    console.log(errors);
+    return next(new AppError(500, 'logging in failed, please try again'));
   }
 
-  res.send({ message: 'Logged in successfully!' });
+  res.send({ message: 'Logged in successfully' });
 }

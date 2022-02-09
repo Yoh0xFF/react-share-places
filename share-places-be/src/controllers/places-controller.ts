@@ -55,7 +55,7 @@ export async function getPlaceById(
     return next(new AppError(404, `Place with id ${placeId}, Not found!`));
   }
 
-  res.send({ place: place.toObject({ getters: true }) });
+  res.send({ place: place.toObject() });
 }
 
 export async function getPacesByUserId(
@@ -75,7 +75,7 @@ export async function getPacesByUserId(
     );
   }
 
-  res.send({ places: places.map((x) => x.toObject({ getters: true })) });
+  res.send({ places: places.map((x) => x.toObject()) });
 }
 
 export async function createPlace(
@@ -167,7 +167,7 @@ export async function updatePlace(
     return next(new AppError(500, 'Updating place failed, please try again.'));
   }
 
-  res.status(200).send({ place: place.toObject({ getters: true }) });
+  res.status(200).send({ place: place.toObject() });
 }
 
 export async function deletePlace(
@@ -191,5 +191,5 @@ export async function deletePlace(
     return next(new AppError(500, 'Deleting place failed, please try again.'));
   }
 
-  res.status(200).send({ place: place.toObject({ getters: true }) });
+  res.status(200).send({ place: place.toObject() });
 }
