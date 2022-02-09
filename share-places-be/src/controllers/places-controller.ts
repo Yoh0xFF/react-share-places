@@ -1,38 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import { startSession } from 'mongoose';
 
 import { AppError } from '../models/error';
-import { Place, PlaceModel } from '../models/place';
+import { PlaceModel } from '../models/place-model';
+import { User, UserModel } from '../models/user-model';
 import { getCoordinatesForAddress } from '../utils/location';
-
-let fakePlaces: Array<Place> = [
-  {
-    id: 'b2e0955d-1e4d-45e4-870d-414df6c4bb95',
-    creator: '8ca36ac7-7eeb-4c74-b7f7-56de5e683664',
-    title: 'Empire State Building',
-    description: 'One of the most famous sky scrapers in the wordl!',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/500px-Empire_State_Building_%28aerial_view%29.jpg',
-    address: '20 W 34th St, New York, NY 10001, United States',
-    location: {
-      lat: 40.7484405,
-      lng: -73.9878531,
-    },
-  },
-  {
-    id: 'c492646d-a0ff-4e8c-8bea-0e8c07ad85b2',
-    creator: '8ca36ac7-7eeb-4c74-b7f7-56de5e683664',
-    title: 'Empire State Building',
-    description: 'One of the most famous sky scrapers in the wordl!',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/500px-Empire_State_Building_%28aerial_view%29.jpg',
-    address: '20 W 34th St, New York, NY 10001, United States',
-    location: {
-      lat: 40.7484405,
-      lng: -73.9878531,
-    },
-  },
-];
 
 export async function getPlaceById(
   req: Request,
@@ -110,23 +83,36 @@ export async function createPlace(
     return next(error);
   }
 
-  const newPlace = new PlaceModel({
-    creator,
-    title,
-    imageUrl,
-    description,
-    address,
-    location,
-  });
-
+  let newPlace;
   try {
-    await newPlace.save();
+    newPlace = new PlaceModel({
+      creator,
+      title,
+      imageUrl,
+      description,
+      address,
+      location,
+    });
+
+    const user = await UserModel.findById(creator);
+    if (!user) {
+      return next(new AppError(404, `User with id: ${creator} not found`));
+    }
+
+    const session = await startSession();
+    await session.startTransaction();
+
+    await newPlace.save({ session });
+    user.places.push(newPlace);
+    await user.save({ session });
+
+    await session.commitTransaction();
   } catch (error) {
     console.log(error);
     return next(new AppError(500, 'Creating place failed, please try again.'));
   }
 
-  res.status(201).send({ place: newPlace });
+  res.status(201).send({ place: newPlace.toObject() });
 }
 
 export async function updatePlace(
@@ -179,13 +165,21 @@ export async function deletePlace(
 
   let place;
   try {
-    place = await PlaceModel.findById(placeId);
+    place = await PlaceModel.findById(placeId).populate('creator');
 
     if (!place) {
       return next(new AppError(404, `Place with id ${placeId}, Not found!`));
     }
 
-    await place.remove();
+    const session = await startSession();
+    await session.startTransaction();
+
+    await place.remove({ session });
+    const creator = place.creator as User;
+    creator.places.pull(place);
+    await creator.save({ session });
+
+    await session.commitTransaction();
   } catch (error) {
     console.log(error);
     return next(new AppError(500, 'Deleting place failed, please try again.'));

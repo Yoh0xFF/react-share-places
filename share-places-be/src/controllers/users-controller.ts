@@ -2,19 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
 import { AppError } from '../models/error';
-import { User, UserModel } from '../models/user';
-
-export const fakeUsers: Array<User> = [
-  {
-    id: '8ca36ac7-7eeb-4c74-b7f7-56de5e683664',
-    name: 'Dennis Ritchie',
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Dennis_Ritchie_2011.jpg/440px-Dennis_Ritchie_2011.jpg',
-    places: 0,
-    email: 'dennis.ritchie@nix.io',
-    password: '123',
-  },
-];
+import { UserModel } from '../models/user-model';
 
 export async function getUsers(
   req: Request,
@@ -61,7 +49,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
       password,
       image:
         'https://cdn.icon-icons.com/icons2/2596/PNG/512/check_one_icon_155665.png',
-      places: 0,
+      places: [],
     });
 
     await newUser.save();
