@@ -3,8 +3,8 @@ import { validationResult } from 'express-validator';
 import { startSession } from 'mongoose';
 
 import { AppError } from '../models/error';
-import { PlaceModel } from '../models/place-model';
-import { User, UserModel } from '../models/user-model';
+import { PlaceDocument, PlaceModel } from '../models/place-model';
+import { UserDocument, UserModel } from '../models/user-model';
 import { getCoordinatesForAddress } from '../utils/location';
 
 export async function getPlaceById(
@@ -14,7 +14,7 @@ export async function getPlaceById(
 ) {
   const placeId = req.params.placeId;
 
-  let place;
+  let place: PlaceDocument;
   try {
     place = await PlaceModel.findById(placeId);
   } catch (error) {
@@ -38,7 +38,7 @@ export async function getPacesByUserId(
 ) {
   const userId = req.params.userId;
 
-  let places;
+  let places: Array<PlaceDocument>;
   try {
     places = await PlaceModel.find({ creator: userId });
   } catch (error) {
@@ -136,7 +136,7 @@ export async function updatePlace(
     description: string;
   } = req.body;
 
-  let place;
+  let place: PlaceDocument;
   try {
     place = await PlaceModel.findById(placeId);
 
@@ -163,7 +163,7 @@ export async function deletePlace(
 ) {
   const placeId = req.params.placeId;
 
-  let place;
+  let place: PlaceDocument;
   try {
     place = await PlaceModel.findById(placeId).populate('creator');
 
@@ -175,7 +175,7 @@ export async function deletePlace(
     await session.startTransaction();
 
     await place.remove({ session });
-    const creator = place.creator as User;
+    const creator = place.creator as UserDocument;
     creator.places.pull(place);
     await creator.save({ session });
 

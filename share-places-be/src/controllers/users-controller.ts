@@ -2,15 +2,14 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
 import { AppError } from '../models/error';
-import { UserModel } from '../models/user-model';
+import { UserDocument, UserModel } from '../models/user-model';
 
 export async function getUsers(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  let users;
-
+  let users: Array<UserDocument>;
   try {
     users = await UserModel.find({}, '-password');
   } catch (error) {
@@ -34,7 +33,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
     password,
   }: { name: string; email: string; password: string } = req.body;
 
-  let newUser;
+  let newUser: UserDocument;
   try {
     const existingUser = await UserModel.findOne({ email: email });
     if (existingUser) {
@@ -71,7 +70,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   const { email, password }: { email: string; password: string } = req.body;
 
   try {
-    const user = await UserModel.findOne({ email: email });
+    const user: UserDocument = await UserModel.findOne({ email: email });
     if (!user) {
       return next(new AppError(401, 'Invalid credentials, email not found'));
     }

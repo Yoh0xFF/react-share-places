@@ -1,11 +1,11 @@
 import { Document, Schema, Types, model } from 'mongoose';
 
 import { reshapingOptions } from '../utils/mongoose-utils';
-import { User } from './user-model';
+import { User, UserDocument } from './user-model';
 
-export interface Place extends Document {
+export interface Place {
   id: string;
-  creator: Types.ObjectId | string | User;
+  creator: Types.ObjectId | string | UserDocument;
 
   imageUrl: string;
   title: string;
@@ -38,4 +38,5 @@ const placeSchema = new Schema<Place>(
   }
 );
 
-export const PlaceModel = model<Place>('Place', placeSchema);
+export type PlaceDocument = Place & Document;
+export const PlaceModel = model<PlaceDocument>('Place', placeSchema);
