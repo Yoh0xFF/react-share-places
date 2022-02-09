@@ -1,6 +1,8 @@
+import { Place } from '@app/type/place';
+
 export interface User {
-  id: number;
+  id: string;
   image: string;
   name: string;
-  places: number;
+  places: Array<Place>;
 }

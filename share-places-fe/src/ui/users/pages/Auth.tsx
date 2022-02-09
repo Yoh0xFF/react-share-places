@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useState } from 'react';
+import React, { FormEvent, useContext, useEffect, useState } from 'react';
 
 import './Auth.css';
 
@@ -9,6 +9,7 @@ import ErrorModal from '@app/ui/shared/components/ui-elements/ErrorModal';
 import LoadingSpinner from '@app/ui/shared/components/ui-elements/LoadingSpinner';
 import { AuthContext } from '@app/ui/shared/context/auth-context';
 import { useForm } from '@app/ui/shared/hooks/form-hook';
+import { useHttpClient } from '@app/ui/shared/hooks/http-hook';
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
@@ -18,8 +19,9 @@ import {
 export default function Auth(): JSX.Element {
   const auth = useContext(AuthContext);
   const [isLoginMode, setLoginMode] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const [isLogin, setIsLogin] = useState(false);
+
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -29,37 +31,48 @@ export default function Auth(): JSX.Element {
     false
   );
 
+  useEffect(() => {
+    if (isLogin) {
+      auth.login();
+    }
+  }, [isLogin]);
+
   const formSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (isLoginMode) {
-    } else {
-      try {
-        setIsLoading(true);
-
-        const response = await fetch('http://localhost:8080/api/users/signup', {
-          method: 'POST',
-          headers: {
+    try {
+      if (isLoginMode) {
+        await sendRequest(
+          'http://localhost:8080/api/users/login',
+          'POST',
+          JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+          {
             'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+          }
+        );
+
+        setIsLogin(true);
+      } else {
+        await sendRequest(
+          'http://localhost:8080/api/users/signup',
+          'POST',
+          JSON.stringify({
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
             password: formState.inputs.password.value,
           }),
-        });
+          {
+            'Content-Type': 'application/json',
+          }
+        );
 
-        const responseData = await response.json();
-        if (!response.ok) {
-          throw new Error(responseData.message);
-        }
-
-        auth.login();
-      } catch (error: any) {
-        setError(error.message || 'Something went wrong, please try again');
-      } finally {
-        setIsLoading(false);
+        setIsLogin(true);
       }
+    } catch (error: any) {
+      console.log(error);
     }
   };
 
@@ -85,13 +98,9 @@ export default function Auth(): JSX.Element {
     setLoginMode((prevState) => !prevState);
   };
 
-  const errorHandler = () => {
-    setError(undefined);
-  };
-
   return (
     <>
-      <ErrorModal error={error} onClear={errorHandler} />
+      <ErrorModal error={error} onClear={clearError} />
       <Card className='authentication'>
         {isLoading && <LoadingSpinner asOverlay />}
 

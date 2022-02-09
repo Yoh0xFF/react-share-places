@@ -25,7 +25,8 @@ export default function UserItem(props: UserItemProps): JSX.Element {
           <div className='user-item__name'>
             <h2>{user.name}</h2>
             <h3>
-              {user.places} {user.places === 1 ? 'place' : 'places'}
+              {user.places.length}{' '}
+              {user.places.length === 1 ? 'place' : 'places'}
             </h3>
           </div>
         </Link>
