@@ -24,9 +24,27 @@ export default function Auth(): JSX.Element {
     false
   );
 
-  const formSubmitHandler = (event: FormEvent) => {
+  const formSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(formState.inputs);
+
+    if (isLoginMode) {
+    } else {
+      const response = await fetch('http://localhost:8080/api/users/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formState.inputs.name.value,
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value,
+        }),
+      });
+
+      const responseData = await response.json();
+      console.log(responseData);
+    }
+
     auth.login();
   };
 

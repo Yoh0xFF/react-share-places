@@ -1,4 +1,11 @@
-import express, { NextFunction, Request, Response } from 'express';
+import cors from 'cors';
+import express, {
+  NextFunction,
+  Request,
+  Response,
+  json,
+  urlencoded,
+} from 'express';
 import path from 'path';
 
 import { AppError } from './models/error';
@@ -12,8 +19,9 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(cors());
+app.use(json());
+app.use(urlencoded({ extended: false }));
 
 app.use('/', indexRouter);
 app.use('/api/places', placesRouter);
