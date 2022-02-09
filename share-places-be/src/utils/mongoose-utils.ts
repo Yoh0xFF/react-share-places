@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 
 export async function connectDatabase(): Promise<void> {
-  const mongodbUser = process.env.MONGODB_ATLAS_USER;
-  const mongodbPass = process.env.MONGODB_ATLAS_PASS;
+  const mongodbUser = process.env.MONGODB_USER;
+  const mongodbPass = process.env.MONGODB_PASS;
+  const mongodbDomain = process.env.MONGODB_DOMAIN;
   const mongodbDatabase = 'share-places';
-  const mongodbUrl = `mongodb+srv://${mongodbUser}:${mongodbPass}@cluster0.ayq7c.mongodb.net/${mongodbDatabase}?retryWrites=true&w=majority`;
+  const mongodbUrl = `mongodb+srv://${mongodbUser}:${mongodbPass}@${mongodbDomain}/${mongodbDatabase}?retryWrites=true&w=majority`;
 
   await mongoose.connect(mongodbUrl);
 }
