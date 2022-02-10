@@ -18,8 +18,8 @@ import {
 
 export default function Auth(): JSX.Element {
   const auth = useContext(AuthContext);
-  const [isLoginMode, setLoginMode] = useState(true);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLoginMode, setLoginMode] = useState<boolean>(true);
+  const [userId, setUserId] = useState<string | undefined>();
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -32,17 +32,17 @@ export default function Auth(): JSX.Element {
   );
 
   useEffect(() => {
-    if (isLogin) {
-      auth.login();
+    if (userId) {
+      auth.login(userId);
     }
-  }, [isLogin]);
+  }, [auth, userId]);
 
   const formSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
 
     try {
       if (isLoginMode) {
-        await sendRequest(
+        const responseData = await sendRequest(
           'http://localhost:8080/api/users/login',
           'POST',
           JSON.stringify({
@@ -54,9 +54,9 @@ export default function Auth(): JSX.Element {
           }
         );
 
-        setIsLogin(true);
+        setUserId(responseData.user.id);
       } else {
-        await sendRequest(
+        const responseData = await sendRequest(
           'http://localhost:8080/api/users/signup',
           'POST',
           JSON.stringify({
@@ -69,7 +69,7 @@ export default function Auth(): JSX.Element {
           }
         );
 
-        setIsLogin(true);
+        setUserId(responseData.user.id);
       }
     } catch (error: any) {
       console.log(error);

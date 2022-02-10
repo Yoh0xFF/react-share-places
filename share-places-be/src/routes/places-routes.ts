@@ -18,8 +18,10 @@ router.get('/user/:userId', getPacesByUserId);
 router.post(
   '/',
   [
+    check('creator').notEmpty(),
     check('title').notEmpty(),
     check('description').isLength({ min: 5 }),
+    check('imageUrl').notEmpty(),
     check('address').notEmpty(),
   ],
   createPlace

@@ -69,8 +69,9 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 
   const { email, password }: { email: string; password: string } = req.body;
 
+  let user: UserDocument;
   try {
-    const user: UserDocument = await UserModel.findOne({ email: email });
+    user = await UserModel.findOne({ email: email });
     if (!user) {
       return next(new AppError(401, 'Invalid credentials, email not found'));
     }
@@ -84,5 +85,5 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     return next(new AppError(500, 'logging in failed, please try again'));
   }
 
-  res.send({ message: 'Logged in successfully' });
+  res.send({ user });
 }

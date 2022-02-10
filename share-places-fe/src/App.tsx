@@ -11,13 +11,18 @@ import Auth from '@app/ui/users/pages/Auth';
 import Users from '@app/ui/users/pages/Users';
 
 function App(): JSX.Element {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string | undefined>();
 
-  const login = useCallback(() => {
+  const login = useCallback((userId: string) => {
     setLoggedIn(true);
+    setUserId(userId);
+    console.log(userId);
   }, []);
+
   const logout = useCallback(() => {
     setLoggedIn(false);
+    setUserId(undefined);
   }, []);
 
   let routes;
@@ -52,7 +57,7 @@ function App(): JSX.Element {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout }}>
       <BrowserRouter>
         <MainNavigation />
         <main>{routes}</main>
