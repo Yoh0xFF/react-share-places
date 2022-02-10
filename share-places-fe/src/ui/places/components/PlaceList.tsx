@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import './PlaceList.css';
 
@@ -6,7 +6,6 @@ import { Place } from '@app/type/place';
 import PlaceItem from '@app/ui/places/components/PlaceItem';
 import Button from '@app/ui/shared/components/form-elements/Button';
 import Card from '@app/ui/shared/components/ui-elements/Card';
-import { AuthContext } from '@app/ui/shared/context/auth-context';
 
 export interface PlaceListProps {
   showShareButton?: boolean;
