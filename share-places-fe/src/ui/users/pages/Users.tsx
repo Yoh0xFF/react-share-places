@@ -8,7 +8,7 @@ import UsersList from '@app/ui/users/components/UsersList';
 
 function Users(): JSX.Element {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [users, setUsers] = useState([] as Array<User>);
+  const [users, setUsers] = useState<Array<User>>();
 
   useEffect(() => {
     const fetchUsers = async () => {
