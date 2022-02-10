@@ -88,16 +88,6 @@ export default function UpdatePlace(): JSX.Element {
     }
   };
 
-  if (!place) {
-    return (
-      <div className='center'>
-        <Card>
-          <h2>Couldn't find the place!</h2>
-        </Card>
-      </div>
-    );
-  }
-
   if (isLoading && !error) {
     return (
       <div className='center'>
