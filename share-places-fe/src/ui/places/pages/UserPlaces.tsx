@@ -28,6 +28,10 @@ export default function UserPlaces(): JSX.Element {
     fetchPlaces();
   }, [userId, sendRequest]);
 
+  const onDeleteHandler = (placeId: string) => {
+    setPlaces(places?.filter((x) => x.id !== placeId));
+  };
+
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
@@ -36,7 +40,9 @@ export default function UserPlaces(): JSX.Element {
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && places && <PlaceList items={places} />}
+      {!isLoading && places && (
+        <PlaceList places={places} onDelete={onDeleteHandler} />
+      )}
     </>
   );
 }

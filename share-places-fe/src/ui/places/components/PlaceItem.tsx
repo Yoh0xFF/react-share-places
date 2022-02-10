@@ -5,31 +5,48 @@ import './PlaceItem.css';
 import { Place } from '@app/type/place';
 import Button from '@app/ui/shared/components/form-elements/Button';
 import Card from '@app/ui/shared/components/ui-elements/Card';
+import ErrorModal from '@app/ui/shared/components/ui-elements/ErrorModal';
+import LoadingSpinner from '@app/ui/shared/components/ui-elements/LoadingSpinner';
 import Map from '@app/ui/shared/components/ui-elements/Map';
 import Modal from '@app/ui/shared/components/ui-elements/Modal';
 import { AuthContext } from '@app/ui/shared/context/auth-context';
+import { useHttpClient } from '@app/ui/shared/hooks/http-hook';
 
 export interface PlaceItemProps {
   place: Place;
+  onDelete: (placeId: string) => void;
 }
 
 export default function PlaceItem(props: PlaceItemProps): JSX.Element {
   const auth = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const { place } = props;
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { place, onDelete } = props;
 
   const toggleMapHandler = () => setShowMap(!showMap);
 
   const toggleShowConfirmHandler = () => setShowConfirm(!showConfirm);
 
-  const confirmDeleteHandler = () => {
+  const confirmDeleteHandler = async () => {
     setShowConfirm(false);
-    console.log('DELETING...');
+
+    try {
+      await sendRequest(
+        `http://localhost:8080/api/places/${place.id}`,
+        'DELETE'
+      );
+
+      onDelete(place.id);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
+      <ErrorModal error={error} onClear={clearError} />
+
       <Modal
         show={showMap}
         onCancel={toggleMapHandler}
@@ -67,16 +84,15 @@ export default function PlaceItem(props: PlaceItemProps): JSX.Element {
 
       <li className='place-item'>
         <Card className='place-item__content'>
+          {isLoading && <LoadingSpinner asOverlay />}
           <div className='place-item__image'>
             <img src={place.imageUrl} alt={place.title} />
           </div>
-
           <div className='place-item__info'>
             <h2>{place.title}</h2>
             <h3>{place.address}</h3>
             <p>{place.description}</p>
           </div>
-
           <div className='place-item__actions'>
             <Button inverse onClick={toggleMapHandler}>
               VIEW ON MAP

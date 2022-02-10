@@ -1,6 +1,6 @@
 export interface Place {
-  id: number;
-  creator: number;
+  id: string;
+  creator: string;
 
   imageUrl: string;
   title: string;

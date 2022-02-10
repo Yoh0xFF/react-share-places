@@ -8,11 +8,12 @@ import Button from '@app/ui/shared/components/form-elements/Button';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 
 export interface PlaceListProps {
-  items: Array<Place>;
+  places: Array<Place>;
+  onDelete: (placeId: string) => void;
 }
 
 export default function PlaceList(props: PlaceListProps): JSX.Element {
-  if (!props.items.length) {
+  if (!props.places.length) {
     return (
       <div className='center'>
         <Card>
@@ -25,8 +26,8 @@ export default function PlaceList(props: PlaceListProps): JSX.Element {
 
   return (
     <ul className='place-list'>
-      {props.items.map((place) => (
-        <PlaceItem key={place.id} place={place} />
+      {props.places.map((place) => (
+        <PlaceItem key={place.id} place={place} onDelete={props.onDelete} />
       ))}
     </ul>
   );
