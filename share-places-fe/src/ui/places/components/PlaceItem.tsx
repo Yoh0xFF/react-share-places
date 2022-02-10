@@ -98,11 +98,11 @@ export default function PlaceItem(props: PlaceItemProps): JSX.Element {
               VIEW ON MAP
             </Button>
 
-            {auth.isLoggedIn && (
+            {auth.userId === place.creator && (
               <Button to={`/places/${place.id}`}>EDIT</Button>
             )}
 
-            {auth.isLoggedIn && (
+            {auth.userId === place.creator && (
               <Button danger onClick={toggleShowConfirmHandler}>
                 DELETE
               </Button>

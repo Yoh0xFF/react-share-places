@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Place } from '@app/type/place';
 import PlaceList from '@app/ui/places/components/PlaceList';
 import ErrorModal from '@app/ui/shared/components/ui-elements/ErrorModal';
 import LoadingSpinner from '@app/ui/shared/components/ui-elements/LoadingSpinner';
+import { AuthContext } from '@app/ui/shared/context/auth-context';
 import { useHttpClient } from '@app/ui/shared/hooks/http-hook';
 
 export default function UserPlaces(): JSX.Element {
+  const auth = useContext(AuthContext);
   const { userId } = useParams();
   const [places, setPlaces] = useState<Array<Place>>();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -41,7 +43,11 @@ export default function UserPlaces(): JSX.Element {
         </div>
       )}
       {!isLoading && places && (
-        <PlaceList places={places} onDelete={onDeleteHandler} />
+        <PlaceList
+          showShareButton={userId === auth.userId}
+          places={places}
+          onDelete={onDeleteHandler}
+        />
       )}
     </>
   );
