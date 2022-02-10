@@ -17,7 +17,6 @@ function App(): JSX.Element {
   const login = useCallback((userId: string) => {
     setLoggedIn(true);
     setUserId(userId);
-    console.log(userId);
   }, []);
 
   const logout = useCallback(() => {
