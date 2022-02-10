@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import './SideDrawer.css';
 
-interface SideDrawerProps {
+export interface SideDrawerProps {
   children: React.ReactNode;
   show: boolean;
   onClick: () => void;

@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import './Backdrop.css';
 
-interface BackdropProps {
+export interface BackdropProps {
   onClick: () => void;
   show: boolean;
 }

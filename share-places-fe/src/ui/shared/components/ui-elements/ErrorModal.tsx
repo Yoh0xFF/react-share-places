@@ -4,7 +4,7 @@ import Modal from './Modal';
 
 import Button from '@app/ui/shared/components/form-elements/Button';
 
-interface ErrorModalProps {
+export interface ErrorModalProps {
   error?: string;
   onClear: () => void;
 }

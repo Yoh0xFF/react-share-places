@@ -9,7 +9,7 @@ import Map from '@app/ui/shared/components/ui-elements/Map';
 import Modal from '@app/ui/shared/components/ui-elements/Modal';
 import { AuthContext } from '@app/ui/shared/context/auth-context';
 
-interface PlaceItemProps {
+export interface PlaceItemProps {
   place: Place;
 }
 

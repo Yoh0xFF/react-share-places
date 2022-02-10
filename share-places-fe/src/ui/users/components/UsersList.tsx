@@ -6,7 +6,7 @@ import { User } from '@app/type/user';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 import UserItem from '@app/ui/users/components/UserItem';
 
-interface UsersListProps {
+export interface UsersListProps {
   items: Array<User>;
 }
 

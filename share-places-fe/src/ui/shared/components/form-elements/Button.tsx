@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './Button.css';
 
-interface ButtonProps {
+export interface ButtonProps {
   children: React.ReactNode;
 
   href?: string;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './MainHeader.css';
 
-interface MainHeaderProps {
+export interface MainHeaderProps {
   children: React.ReactNode;
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import './Map.css';
 
-interface MapProps {
+export interface MapProps {
   className?: string;
   style?: React.CSSProperties;
 

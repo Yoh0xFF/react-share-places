@@ -7,7 +7,7 @@ import { User } from '@app/type/user';
 import Avatar from '@app/ui/shared/components/ui-elements/Avatar';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 
-interface UserItemProps {
+export interface UserItemProps {
   user: User;
 }
 

@@ -4,7 +4,7 @@ import './Input.css';
 
 import { ValidatorType, validate } from '@app/ui/shared/util/validators';
 
-interface InputState {
+export interface InputState {
   value: string;
   isValid: boolean;
   isTouched: boolean;

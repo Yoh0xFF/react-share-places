@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Avatar.css';
 
-interface AvatarProps {
+export interface AvatarProps {
   image: string;
   alt: string;
   className?: string;

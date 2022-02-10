@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import Backdrop from './Backdrop';
 import './Modal.css';
 
-interface ModalProps {
+export interface ModalProps {
   show: boolean;
   onCancel: () => void;
 
