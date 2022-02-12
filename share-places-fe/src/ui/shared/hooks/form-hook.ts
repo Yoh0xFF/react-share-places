@@ -1,21 +1,39 @@
 import { useCallback, useReducer } from 'react';
 
-interface InputState {
-  value: string;
+export interface InputState {
+  value: InputValueType;
   isValid: boolean;
 }
 
-interface InputsState {
+export interface InputsState {
   [key: string]: InputState;
 }
 
-interface FormState {
+export interface FormState {
   inputs: InputsState;
   isValid: boolean;
 }
 
+export type InputValueType = string | number | File | undefined;
+
+export type InputHandlerType = (
+  id: string,
+  value: InputValueType,
+  isValid: boolean
+) => void;
+
+export type SetDataHandlerType = (
+  inputs: InputsState,
+  isValid: boolean
+) => void;
+
 type Action =
-  | { type: 'INPUT_CHANGE'; inputId: string; value: string; isValid: boolean }
+  | {
+      type: 'INPUT_CHANGE';
+      inputId: string;
+      value: InputValueType;
+      isValid: boolean;
+    }
   | { type: 'SET_DATA'; inputs: InputsState; isValid: boolean };
 
 function formReducer(state: FormState, action: Action): FormState {
@@ -52,9 +70,6 @@ function formReducer(state: FormState, action: Action): FormState {
   }
 }
 
-type InputHandlerType = (id: string, value: string, isValid: boolean) => void;
-type SetDataHandlerType = (inputs: InputsState, isValid: boolean) => void;
-
 export function useForm(
   inputsState: InputsState,
   valid: boolean
@@ -65,7 +80,7 @@ export function useForm(
   });
 
   const inputHandler = useCallback(
-    (id: string, value: string, isValid: boolean) => {
+    (id: string, value: InputValueType, isValid: boolean) => {
       dispatch({
         type: 'INPUT_CHANGE',
         inputId: id,

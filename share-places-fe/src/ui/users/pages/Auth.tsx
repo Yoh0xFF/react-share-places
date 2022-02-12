@@ -3,6 +3,7 @@ import React, { FormEvent, useContext, useEffect, useState } from 'react';
 import './Auth.css';
 
 import Button from '@app/ui/shared/components/form-elements/Button';
+import ImageUpload from '@app/ui/shared/components/form-elements/ImageUpload';
 import Input from '@app/ui/shared/components/form-elements/Input';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 import ErrorModal from '@app/ui/shared/components/ui-elements/ErrorModal';
@@ -39,6 +40,8 @@ export default function Auth(): JSX.Element {
 
   const formSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
+
+    console.log(formState.inputs);
 
     try {
       if (isLoginMode) {
@@ -78,7 +81,7 @@ export default function Auth(): JSX.Element {
 
   const toggleModeHandler = () => {
     if (!isLoginMode) {
-      const { name, ...otherInputs } = formState.inputs;
+      const { name, image, ...otherInputs } = formState.inputs;
       setFormData(
         {
           ...otherInputs,
@@ -90,6 +93,7 @@ export default function Auth(): JSX.Element {
         {
           ...formState.inputs,
           name: { value: '', isValid: false },
+          image: { value: '', isValid: false },
         },
         false
       );
@@ -117,6 +121,10 @@ export default function Auth(): JSX.Element {
               validators={[VALIDATOR_REQUIRE()]}
               onInput={inputHandler}
             />
+          )}
+
+          {!isLoginMode && (
+            <ImageUpload id='image' center onInput={inputHandler} />
           )}
 
           <Input

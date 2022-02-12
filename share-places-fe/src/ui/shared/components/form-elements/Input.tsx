@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useReducer } from 'react';
 
 import './Input.css';
 
+import { InputHandlerType } from '@app/ui/shared/hooks/form-hook';
 import { ValidatorType, validate } from '@app/ui/shared/util/validators';
 
 export interface InputState {
@@ -51,7 +52,7 @@ interface InputProps {
   type?: string;
   rows?: number;
 
-  onInput?: (id: string, value: string, isValid: boolean) => void;
+  onInput?: InputHandlerType;
 }
 
 export default function Input(props: InputProps): JSX.Element {
