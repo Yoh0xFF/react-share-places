@@ -20,7 +20,9 @@ import {
 export default function Auth(): JSX.Element {
   const auth = useContext(AuthContext);
   const [isLoginMode, setLoginMode] = useState<boolean>(true);
-  const [userId, setUserId] = useState<string | undefined>();
+  const [authData, setAuthData] = useState<
+    { userId: string; token: string } | undefined
+  >();
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -33,10 +35,10 @@ export default function Auth(): JSX.Element {
   );
 
   useEffect(() => {
-    if (userId) {
-      auth.login(userId);
+    if (authData) {
+      auth.login(authData.userId, authData.token);
     }
-  }, [auth, userId]);
+  }, [auth, authData]);
 
   const formSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
@@ -55,7 +57,10 @@ export default function Auth(): JSX.Element {
           }
         );
 
-        setUserId(responseData.user.id);
+        setAuthData({
+          userId: responseData.user.id,
+          token: responseData.token,
+        });
       } else {
         const formData = new FormData();
         formData.append('name', formState.inputs.name.value as string);
@@ -70,7 +75,10 @@ export default function Auth(): JSX.Element {
           {}
         );
 
-        setUserId(responseData.user.id);
+        setAuthData({
+          userId: responseData.user.id,
+          token: responseData.token,
+        });
       }
     } catch (error: any) {
       console.log(error);

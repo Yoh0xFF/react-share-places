@@ -23,7 +23,6 @@ router.post(
   '/',
   fileUpload.single('image'),
   [
-    check('creator').notEmpty(),
     check('title').notEmpty(),
     check('description').isLength({ min: 5 }),
     check('address').notEmpty(),

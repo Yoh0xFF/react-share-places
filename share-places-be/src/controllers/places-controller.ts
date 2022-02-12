@@ -73,12 +73,10 @@ export async function createPlace(
   }
 
   const {
-    creator,
     title,
     description,
     address,
   }: {
-    creator: string;
     title: string;
     description: string;
     address: string;
@@ -95,7 +93,7 @@ export async function createPlace(
   let newPlace;
   try {
     newPlace = new PlaceModel({
-      creator,
+      creator: req.userData.userId,
       title,
       image: req.file.path.substring(req.file.path.indexOf('/uploads') + 1),
       description,
@@ -103,9 +101,11 @@ export async function createPlace(
       location,
     });
 
-    const user = await UserModel.findById(creator);
+    const user = await UserModel.findById(req.userData.userId);
     if (!user) {
-      return next(new AppError(404, `User with id: ${creator} not found`));
+      return next(
+        new AppError(404, `User with id: ${req.userData.userId} not found`)
+      );
     }
 
     const session = await startSession();

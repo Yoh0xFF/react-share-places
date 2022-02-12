@@ -11,21 +11,21 @@ import Auth from '@app/ui/users/pages/Auth';
 import Users from '@app/ui/users/pages/Users';
 
 function App(): JSX.Element {
-  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [token, setToken] = useState<string | undefined>();
   const [userId, setUserId] = useState<string | undefined>();
 
-  const login = useCallback((userId: string) => {
-    setLoggedIn(true);
+  const login = useCallback((userId: string, token: string) => {
+    setToken(token);
     setUserId(userId);
   }, []);
 
   const logout = useCallback(() => {
-    setLoggedIn(false);
+    setToken(undefined);
     setUserId(undefined);
   }, []);
 
   let routes;
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <Routes>
         <Route path='/' element={<Users />} />
@@ -56,7 +56,9 @@ function App(): JSX.Element {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn: !!token, userId, token, login, logout }}
+    >
       <BrowserRouter>
         <MainNavigation />
         <main>{routes}</main>

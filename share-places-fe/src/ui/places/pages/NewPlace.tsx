@@ -42,7 +42,6 @@ export default function NewPlace(): JSX.Element {
 
     try {
       const formData = new FormData();
-      formData.append('creator', auth.userId as string);
       formData.append('title', formState.inputs.title.value as string);
       formData.append(
         'description',
@@ -51,7 +50,9 @@ export default function NewPlace(): JSX.Element {
       formData.append('address', formState.inputs.address.value as string);
       formData.append('image', formState.inputs.image.value as File);
 
-      await sendRequest('http://localhost:8080/api/places', 'POST', formData);
+      await sendRequest('http://localhost:8080/api/places', 'POST', formData, {
+        Authorization: `Bearer ${auth.token}`,
+      });
 
       setIsSaved(true);
     } catch (error) {

@@ -34,7 +34,11 @@ export default function PlaceItem(props: PlaceItemProps): JSX.Element {
     try {
       await sendRequest(
         `http://localhost:8080/api/places/${place.id}`,
-        'DELETE'
+        'DELETE',
+        null,
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
       );
 
       onDelete(place.id);

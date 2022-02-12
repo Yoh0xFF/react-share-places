@@ -6,7 +6,6 @@ import './PlaceForm.css';
 import { Place } from '@app/type/place';
 import Button from '@app/ui/shared/components/form-elements/Button';
 import Input from '@app/ui/shared/components/form-elements/Input';
-import Card from '@app/ui/shared/components/ui-elements/Card';
 import ErrorModal from '@app/ui/shared/components/ui-elements/ErrorModal';
 import LoadingSpinner from '@app/ui/shared/components/ui-elements/LoadingSpinner';
 import { AuthContext } from '@app/ui/shared/context/auth-context';
@@ -78,6 +77,7 @@ export default function UpdatePlace(): JSX.Element {
           description: formState.inputs.description.value,
         }),
         {
+          Authorization: `Bearer ${auth.token}`,
           'Content-Type': 'application/json',
         }
       );
