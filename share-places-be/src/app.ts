@@ -6,6 +6,8 @@ import express, {
   json,
   urlencoded,
 } from 'express';
+import { unlink } from 'fs';
+import { homedir } from 'os';
 import path from 'path';
 
 import { AppError } from './models/error';
@@ -23,6 +25,8 @@ app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
+app.use('/uploads', express.static(path.join(homedir(), 'uploads')));
+
 app.use('/', indexRouter);
 app.use('/api/places', placesRouter);
 app.use('/api/users', usersRouter);
@@ -34,6 +38,13 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // error handler
 app.use((error: AppError, req: Request, res: Response, next: NextFunction) => {
+  // Delete uploaded file if there is an error
+  if (req.file) {
+    unlink(req.file.path, (error) => {
+      error && console.log(error);
+    });
+  }
+
   // Skip if response is already sent
   if (res.headersSent) {
     return next(error);

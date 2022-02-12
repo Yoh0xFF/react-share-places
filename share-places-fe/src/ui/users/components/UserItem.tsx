@@ -19,7 +19,10 @@ export default function UserItem(props: UserItemProps): JSX.Element {
       <Card className='user-item__content'>
         <Link to={`/${user.id}/places`}>
           <div className='user-item__image'>
-            <Avatar image={user.image} alt={user.name} />
+            <Avatar
+              image={`http://localhost:8080/${user.image}`}
+              alt={user.name}
+            />
           </div>
 
           <div className='user-item__name'>

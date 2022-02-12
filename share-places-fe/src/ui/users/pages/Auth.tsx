@@ -41,8 +41,6 @@ export default function Auth(): JSX.Element {
   const formSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
 
-    console.log(formState.inputs);
-
     try {
       if (isLoginMode) {
         const responseData = await sendRequest(
@@ -59,17 +57,17 @@ export default function Auth(): JSX.Element {
 
         setUserId(responseData.user.id);
       } else {
+        const formData = new FormData();
+        formData.append('name', formState.inputs.name.value as string);
+        formData.append('email', formState.inputs.email.value as string);
+        formData.append('password', formState.inputs.password.value as string);
+        formData.append('image', formState.inputs.image.value as File);
+
         const responseData = await sendRequest(
           'http://localhost:8080/api/users/signup',
           'POST',
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-          }),
-          {
-            'Content-Type': 'application/json',
-          }
+          formData,
+          {}
         );
 
         setUserId(responseData.user.id);

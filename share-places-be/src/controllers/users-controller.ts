@@ -46,8 +46,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
       name,
       email,
       password,
-      image:
-        'https://cdn.icon-icons.com/icons2/2596/PNG/512/check_one_icon_155665.png',
+      image: req.file.path.substring(req.file.path.indexOf('/uploads') + 1),
       places: [],
     });
 
