@@ -7,7 +7,7 @@ export interface Place {
   id: string;
   creator: Types.ObjectId | string | UserDocument;
 
-  imageUrl: string;
+  image: string;
   title: string;
   description: string;
 
@@ -22,7 +22,7 @@ const placeSchema = new Schema<Place>(
   {
     creator: { type: Types.ObjectId, required: true, ref: 'User' },
 
-    imageUrl: { type: String, required: true },
+    image: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
 

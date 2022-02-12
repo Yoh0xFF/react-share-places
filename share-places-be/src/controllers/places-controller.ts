@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import { unlink } from 'fs';
 import { startSession } from 'mongoose';
+import { homedir } from 'os';
+import path from 'path';
 
 import { AppError } from '../models/error';
 import { PlaceDocument, PlaceModel } from '../models/place-model';
@@ -72,13 +75,11 @@ export async function createPlace(
   const {
     creator,
     title,
-    imageUrl,
     description,
     address,
   }: {
     creator: string;
     title: string;
-    imageUrl: string;
     description: string;
     address: string;
   } = req.body;
@@ -96,7 +97,7 @@ export async function createPlace(
     newPlace = new PlaceModel({
       creator,
       title,
-      imageUrl,
+      image: req.file.path.substring(req.file.path.indexOf('/uploads') + 1),
       description,
       address,
       location,
@@ -172,8 +173,10 @@ export async function deletePlace(
   const placeId = req.params.placeId;
 
   let place: PlaceDocument;
+  let imagePath: string;
   try {
     place = await PlaceModel.findById(placeId).populate('creator');
+    imagePath = place.image;
 
     if (!place) {
       return next(new AppError(404, `Place with id ${placeId}, Not found!`));
@@ -192,6 +195,10 @@ export async function deletePlace(
     console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(new AppError(500, 'Deleting place failed, please try again.'));
   }
+
+  unlink(path.join(homedir(), imagePath), (error) => {
+    error && console.log(error);
+  });
 
   res.status(200).send({ place: place.toObject() });
 }

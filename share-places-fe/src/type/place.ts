@@ -2,7 +2,7 @@ export interface Place {
   id: string;
   creator: string;
 
-  imageUrl: string;
+  image: string;
   title: string;
   description: string;
 

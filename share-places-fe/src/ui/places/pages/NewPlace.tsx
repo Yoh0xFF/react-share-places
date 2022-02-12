@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './PlaceForm.css';
 
 import Button from '@app/ui/shared/components/form-elements/Button';
+import ImageUpload from '@app/ui/shared/components/form-elements/ImageUpload';
 import Input from '@app/ui/shared/components/form-elements/Input';
 import ErrorModal from '@app/ui/shared/components/ui-elements/ErrorModal';
 import LoadingSpinner from '@app/ui/shared/components/ui-elements/LoadingSpinner';
@@ -24,8 +25,8 @@ export default function NewPlace(): JSX.Element {
     {
       title: { value: '', isValid: false },
       description: { value: '', isValid: false },
-      imageUrl: { value: '', isValid: false },
       address: { value: '', isValid: false },
+      image: { value: '', isValid: false },
     },
     false
   );
@@ -40,20 +41,17 @@ export default function NewPlace(): JSX.Element {
     event.preventDefault();
 
     try {
-      await sendRequest(
-        'http://localhost:8080/api/places',
-        'POST',
-        JSON.stringify({
-          creator: auth.userId,
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          imageUrl: formState.inputs.imageUrl.value,
-          address: formState.inputs.address.value,
-        }),
-        {
-          'Content-Type': 'application/json',
-        }
+      const formData = new FormData();
+      formData.append('creator', auth.userId as string);
+      formData.append('title', formState.inputs.title.value as string);
+      formData.append(
+        'description',
+        formState.inputs.description.value as string
       );
+      formData.append('address', formState.inputs.address.value as string);
+      formData.append('image', formState.inputs.image.value as File);
+
+      await sendRequest('http://localhost:8080/api/places', 'POST', formData);
 
       setIsSaved(true);
     } catch (error) {
@@ -87,21 +85,17 @@ export default function NewPlace(): JSX.Element {
 
         <Input
           element='input'
-          id='imageUrl'
-          type='text'
-          label='ImageURL'
-          errorText='Please enter a valid image url.'
-          validators={[VALIDATOR_REQUIRE()]}
-          onInput={inputHandler}
-        />
-
-        <Input
-          element='input'
           id='address'
           type='text'
           label='Address'
           errorText='Please enter a valid address.'
           validators={[VALIDATOR_REQUIRE()]}
+          onInput={inputHandler}
+        />
+
+        <ImageUpload
+          id='image'
+          errorText='Please enter an image.'
           onInput={inputHandler}
         />
 

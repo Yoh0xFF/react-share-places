@@ -8,6 +8,7 @@ import {
   getPlaceById,
   updatePlace,
 } from '../controllers/places-controller';
+import { fileUpload } from '../middlewares/file-upload';
 
 const router = Router();
 
@@ -17,11 +18,11 @@ router.get('/user/:userId', getPacesByUserId);
 
 router.post(
   '/',
+  fileUpload.single('image'),
   [
     check('creator').notEmpty(),
     check('title').notEmpty(),
     check('description').isLength({ min: 5 }),
-    check('imageUrl').notEmpty(),
     check('address').notEmpty(),
   ],
   createPlace

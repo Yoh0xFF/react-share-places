@@ -86,7 +86,10 @@ export default function PlaceItem(props: PlaceItemProps): JSX.Element {
         <Card className='place-item__content'>
           {isLoading && <LoadingSpinner asOverlay />}
           <div className='place-item__image'>
-            <img src={place.imageUrl} alt={place.title} />
+            <img
+              src={`http://localhost:8080/${place.image}`}
+              alt={place.title}
+            />
           </div>
           <div className='place-item__info'>
             <h2>{place.title}</h2>
