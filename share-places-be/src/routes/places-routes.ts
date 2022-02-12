@@ -8,6 +8,7 @@ import {
   getPlaceById,
   updatePlace,
 } from '../controllers/places-controller';
+import { checkAuth } from '../middlewares/check-auth';
 import { fileUpload } from '../middlewares/file-upload';
 
 const router = Router();
@@ -15,6 +16,8 @@ const router = Router();
 router.get('/:placeId', getPlaceById);
 
 router.get('/user/:userId', getPacesByUserId);
+
+router.use(checkAuth);
 
 router.post(
   '/',

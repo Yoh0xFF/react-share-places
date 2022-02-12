@@ -1,5 +1,7 @@
+import bcrypt from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import jwt from 'jsonwebtoken';
 
 import { AppError } from '../models/error';
 import { UserDocument, UserModel } from '../models/user-model';
@@ -20,6 +22,13 @@ export async function getUsers(
   res.send({ users: users.map((x) => x.toObject()) });
 }
 
+function _generateJsonWebToken(user: UserDocument): string {
+  const token = jwt.sign({ userId: user.id, email: user.email }, 'top_secret', {
+    expiresIn: '1h',
+  });
+  return token;
+}
+
 export async function signup(req: Request, res: Response, next: NextFunction) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -34,6 +43,7 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
   }: { name: string; email: string; password: string } = req.body;
 
   let newUser: UserDocument;
+  let token;
   try {
     const existingUser = await UserModel.findOne({ email: email });
     if (existingUser) {
@@ -42,21 +52,28 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
       );
     }
 
+    const hashedPassword = await bcrypt.hash(password, 12);
+
     newUser = new UserModel({
       name,
       email,
-      password,
+      password: hashedPassword,
       image: req.file.path.substring(req.file.path.indexOf('/uploads') + 1),
       places: [],
     });
 
     await newUser.save();
+
+    token = _generateJsonWebToken(newUser);
   } catch (error) {
     console.error('Internal server error: %s, %s', error.message, error.stack);
     return next(new AppError(500, 'Creating user failed, please try again'));
   }
 
-  res.status(201).send({ user: newUser.toObject() });
+  res.status(201).send({
+    user: newUser,
+    token,
+  });
 }
 
 export async function login(req: Request, res: Response, next: NextFunction) {
@@ -69,20 +86,25 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   const { email, password }: { email: string; password: string } = req.body;
 
   let user: UserDocument;
+  let token;
   try {
     user = await UserModel.findOne({ email: email });
     if (!user) {
       return next(new AppError(401, 'Invalid credentials, email not found'));
     }
-    if (user.password !== password) {
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
       return next(
         new AppError(401, "Invalid credentials, password doesn't match!")
       );
     }
+
+    token = _generateJsonWebToken(user);
   } catch (error) {
     console.log(errors);
     return next(new AppError(500, 'logging in failed, please try again'));
   }
 
-  res.send({ user });
+  res.send({ user, token });
 }
