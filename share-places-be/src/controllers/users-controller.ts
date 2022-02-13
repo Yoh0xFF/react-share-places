@@ -70,8 +70,13 @@ export async function signup(req: Request, res: Response, next: NextFunction) {
     return next(new AppError(500, 'Creating user failed, please try again'));
   }
 
+  delete newUser.password;
   res.status(201).send({
-    user: newUser,
+    user: {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+    },
     token,
   });
 }
@@ -106,5 +111,12 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     return next(new AppError(500, 'logging in failed, please try again'));
   }
 
-  res.send({ user, token });
+  res.send({
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    },
+    token,
+  });
 }
