@@ -4,7 +4,7 @@ import { reshapingOptions } from '../utils/mongoose-utils';
 import { User, UserDocument } from './user-model';
 
 export interface Place {
-  id: string;
+  id: Types.ObjectId;
   creator: Types.ObjectId | string | UserDocument;
 
   image: string;
@@ -38,5 +38,5 @@ const placeSchema = new Schema<Place>(
   }
 );
 
-export type PlaceDocument = Place & Document;
+export type PlaceDocument = Place & Omit<Document, 'id'>;
 export const PlaceModel = model<PlaceDocument>('Place', placeSchema);

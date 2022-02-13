@@ -19,7 +19,7 @@ export async function getUsers(
     return next(new AppError(500, 'Fetching users failed, please try again'));
   }
 
-  res.send({ users: users.map((x) => x.toObject()) });
+  res.send({ users });
 }
 
 function _generateJsonWebToken(user: UserDocument): string {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { unlink } from 'fs';
-import { startSession } from 'mongoose';
+import { Types, startSession } from 'mongoose';
 import { homedir } from 'os';
 import path from 'path';
 
@@ -31,7 +31,7 @@ export async function getPlaceById(
     return next(new AppError(404, `Place with id ${placeId}, Not found!`));
   }
 
-  res.send({ place: place.toObject() });
+  res.send({ place });
 }
 
 export async function getPacesByUserId(
@@ -121,7 +121,7 @@ export async function createPlace(
     return next(new AppError(500, 'Creating place failed, please try again.'));
   }
 
-  res.status(201).send({ place: newPlace.toObject() });
+  res.status(201).send({ place: newPlace });
 }
 
 export async function updatePlace(
@@ -153,6 +153,11 @@ export async function updatePlace(
       return next(new AppError(404, `Place with id ${placeId}, Not found!`));
     }
 
+    const creatorId = (place.creator as Types.ObjectId).toString();
+    if (creatorId !== req.userData.userId) {
+      return next(new AppError(403, 'You are not allowed to edit this place!'));
+    }
+
     place.title = title;
     place.description = description;
 
@@ -162,7 +167,7 @@ export async function updatePlace(
     return next(new AppError(500, 'Updating place failed, please try again.'));
   }
 
-  res.status(200).send({ place: place.toObject() });
+  res.status(200).send({ place });
 }
 
 export async function deletePlace(
@@ -180,6 +185,11 @@ export async function deletePlace(
 
     if (!place) {
       return next(new AppError(404, `Place with id ${placeId}, Not found!`));
+    }
+
+    const creatorId = (place.creator as UserDocument).id.toString();
+    if (creatorId !== req.userData.userId) {
+      return next(new AppError(403, 'You are not allowed to edit this place!'));
     }
 
     const session = await startSession();
@@ -200,5 +210,5 @@ export async function deletePlace(
     error && console.log(error);
   });
 
-  res.status(200).send({ place: place.toObject() });
+  res.status(200).send({ place });
 }
