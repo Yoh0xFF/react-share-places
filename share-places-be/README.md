@@ -7,6 +7,9 @@ Sample project demonstrating REST CRUD API using express and mongoose.
 - [mongoose](https://mongoosejs.com/)
 
 # Environment Variables
-- **GOOGLE_MAP_LOCATION_API_KEY** - google map sdk api key to get coordinates by address
-- **MONGODB_URL** - Mongodb cluster url
+- **MONGODB_USER** - Mongodb cluster username
+- **MONGODB_PASS** - Mongodb cluster password
+- **MONGODB_DOMAIN** - Mongodb cluster domain
+- **MONGODB_NAME** - Mongodb database name
+- **GOOGLE_MAP_LOCATION_API_KEY** - Google map sdk api key to get coordinates by address
 - **JWT_SECRET** - Json Web Token secret key
