@@ -33,7 +33,7 @@ export default function PlaceItem(props: PlaceItemProps): JSX.Element {
 
     try {
       await sendRequest(
-        `${process.env.REACT_APP_API_URL}/places/${place.id}`,
+        `${process.env.REACT_APP_API_URL}/api/places/${place.id}`,
         'DELETE',
         null,
         {
@@ -91,7 +91,7 @@ export default function PlaceItem(props: PlaceItemProps): JSX.Element {
           {isLoading && <LoadingSpinner asOverlay />}
           <div className='place-item__image'>
             <img
-              src={`http://localhost:8080/${place.image}`}
+              src={`${process.env.REACT_APP_API_URL}/${place.image}`}
               alt={place.title}
             />
           </div>

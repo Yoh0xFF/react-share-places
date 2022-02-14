@@ -51,7 +51,7 @@ export default function NewPlace(): JSX.Element {
       formData.append('image', formState.inputs.image.value as File);
 
       await sendRequest(
-        `${process.env.REACT_APP_API_URL}/places`,
+        `${process.env.REACT_APP_API_URL}/api/places`,
         'POST',
         formData,
         {

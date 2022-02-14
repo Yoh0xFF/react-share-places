@@ -20,7 +20,7 @@ export default function UserItem(props: UserItemProps): JSX.Element {
         <Link to={`/${user.id}/places`}>
           <div className='user-item__image'>
             <Avatar
-              image={`http://localhost:8080/${user.image}`}
+              image={`${process.env.REACT_APP_API_URL}/${user.image}`}
               alt={user.name}
             />
           </div>
