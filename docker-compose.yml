@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     entrypoint: npm
-    command: [ "run", "start" ]
+    command: ["run", "start"]
     volumes:
       - ./share-places-fe:/var/app
     environment:
