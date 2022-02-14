@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  front-end:
+    build:
+      context: ./share-places-be
+    ports:
+      - "3000:3000"
+    entrypoint: npm
+    command: [ "run", "start" ]
+    volumes:
+      - ./share-places-fe:/var/app
+    environment:
+      GOOGLE_MAP_API_KEY: $GOOGLE_MAP_API_KEY
+    depends_on:
+      - back-end
+
+  back-end:
+    build:
+      context: ./share-places-be
+    ports:
+      - "8080:8080"
+    entrypoint: npm
+    command: ["run", "watch"]
+    volumes:
+      - ./share-places-be:/var/app
+      - ~/uploads:/root/uploads
+    environment:
+      MONGODB_URL: $MONGODB_URL
+      GOOGLE_MAP_API_KEY: $GOOGLE_MAP_API_KEY
