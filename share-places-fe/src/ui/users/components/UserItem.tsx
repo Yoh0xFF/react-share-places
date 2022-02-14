@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './UserItem.css';
 
-import { User } from '@app/type/user';
+import { User } from '@app/types/user';
 import Avatar from '@app/ui/shared/components/ui-elements/Avatar';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 

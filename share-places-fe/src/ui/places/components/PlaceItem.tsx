@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 
 import './PlaceItem.css';
 
-import { Place } from '@app/type/place';
+import { Place } from '@app/types/place';
 import Button from '@app/ui/shared/components/form-elements/Button';
 import Card from '@app/ui/shared/components/ui-elements/Card';
 import ErrorModal from '@app/ui/shared/components/ui-elements/ErrorModal';

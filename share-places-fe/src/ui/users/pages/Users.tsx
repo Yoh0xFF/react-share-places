@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { User } from '@app/type/user';
+import { User } from '@app/types/user';
 import ErrorModal from '@app/ui/shared/components/ui-elements/ErrorModal';
 import LoadingSpinner from '@app/ui/shared/components/ui-elements/LoadingSpinner';
 import { useHttpClient } from '@app/ui/shared/hooks/http-hook';

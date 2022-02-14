@@ -1,4 +1,4 @@
-import { Place } from '@app/type/place';
+import { Place } from '@app/types/place';
 
 export interface User {
   id: string;

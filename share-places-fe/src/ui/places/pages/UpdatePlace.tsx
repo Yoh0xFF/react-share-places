@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import './PlaceForm.css';
 
-import { Place } from '@app/type/place';
+import { Place } from '@app/types/place';
 import Button from '@app/ui/shared/components/form-elements/Button';
 import Input from '@app/ui/shared/components/form-elements/Input';
 import ErrorModal from '@app/ui/shared/components/ui-elements/ErrorModal';

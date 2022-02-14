@@ -2,7 +2,7 @@ import React from 'react';
 
 import './PlaceList.css';
 
-import { Place } from '@app/type/place';
+import { Place } from '@app/types/place';
 import PlaceItem from '@app/ui/places/components/PlaceItem';
 import Button from '@app/ui/shared/components/form-elements/Button';
 import Card from '@app/ui/shared/components/ui-elements/Card';
