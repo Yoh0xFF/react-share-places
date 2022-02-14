@@ -23,9 +23,13 @@ export async function getUsers(
 }
 
 function _generateJsonWebToken(user: UserDocument): string {
-  const token = jwt.sign({ userId: user.id, email: user.email }, 'top_secret', {
-    expiresIn: '1h',
-  });
+  const token = jwt.sign(
+    { userId: user.id, email: user.email },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: '1h',
+    }
+  );
   return token;
 }
 

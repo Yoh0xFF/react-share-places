@@ -15,7 +15,7 @@ export function checkAuth(req: Request, res: Response, next: NextFunction) {
       throw new Error('Authorization failed!');
     }
 
-    const decodedToken: any = jwt.verify(token, 'top_secret');
+    const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET);
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (error) {

@@ -7,4 +7,5 @@ Sample project demonstrating React SPA application.
 - [react-router](https://reactrouter.com/)
 
 # Environment Variables
-- **REACT_APP_GOOGLE_MAP_SDK_JS_API_KEY** - google map sdk api key
+- **REACT_APP_API_URL** - Rest api base url
+- **REACT_APP_GOOGLE_MAP_API_KEY** - Google map sdk api key

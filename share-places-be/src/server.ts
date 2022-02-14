@@ -1,8 +1,15 @@
+import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
 import errorHandler from 'errorhandler';
 import http from 'http';
 
 import app from './app';
 import { connectDatabase } from './utils/mongoose-utils';
+
+// Configure environment
+const appEnvLabel = process.env.APP_ENV || 'development';
+const appEnv = dotenv.config({ path: `.env.${appEnvLabel}` });
+dotenvExpand.expand(appEnv);
 
 // Do not reject self signed certificates
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';

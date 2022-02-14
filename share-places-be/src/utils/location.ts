@@ -2,13 +2,11 @@ import axios from 'axios';
 
 import { AppError } from '../models/error';
 
-const API_KEY = process.env.GOOGLE_MAP_SDK_JS_API_KEY;
-
 export async function getCoordinatesForAddress(
   address: string
 ): Promise<{ lat: number; lng: number }> {
   let encodedAddress = encodeURIComponent(address);
-  const urlQueryParams = `key=${API_KEY}&address=${encodedAddress}`;
+  const urlQueryParams = `key=${process.env.GOOGLE_MAP_LOCATION_API_KEY}&address=${encodedAddress}`;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?${urlQueryParams}`;
 
   const data = (await axios.get(url)).data;
