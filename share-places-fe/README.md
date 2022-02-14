@@ -8,3 +8,9 @@ Sample project demonstrating React SPA application.
 
 ### Please export env vars
 - **GOOGLE_MAP_API_KEY** - Google map sdk api key
+
+### You can run app with npm
+- npm run start
+
+### App url
+- http://localhost:3000

@@ -9,3 +9,9 @@ Sample project demonstrating REST CRUD API using express and mongoose.
 ### Please export env vars
 - **MONGODB_URL** - MongoDB Atlas cluster url
 - **GOOGLE_MAP_API_KEY** - Google map sdk api key to get coordinates by address
+
+### You can run app with npm
+- npm run watch
+
+### App url
+- http://localhost:8080
