@@ -2,9 +2,9 @@
 
 Sample project demonstrating React SPA application.
 
-# Used Core Libraries
+### Used core libraries
 - [react](https://reactjs.org/)
 - [react-router](https://reactrouter.com/)
 
-# Please Export Environment Variables
+### Please export env vars
 - **GOOGLE_MAP_API_KEY** - Google map sdk api key
