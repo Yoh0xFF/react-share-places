@@ -2,8 +2,8 @@
 Sample application demonstrating React SPA.
 
 ### Please export environment variables
-- **MONGODB_URL** - MongoDB Atlas cluster url
-- **GOOGLE_MAP_API_KEY** - Google Maps api key (Maps JavaScript API, Geocoding API)
+- **MONGODB_URL** - MongoDB Atlas Cluster URL
+- **GOOGLE_MAP_API_KEY** - Google Maps API Key (Maps JavaScript API, Geocoding API)
 
 ### You can run app with docker compose
 - docker compose up front-end

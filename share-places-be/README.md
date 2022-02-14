@@ -7,8 +7,8 @@ Sample project demonstrating REST CRUD API using express and mongoose.
 - [mongoose](https://mongoosejs.com/)
 
 ### Please export environment variables
-- **MONGODB_URL** - MongoDB Atlas cluster url
-- **GOOGLE_MAP_API_KEY** - Google Maps api key (Geocoding API)
+- **MONGODB_URL** - MongoDB Atlas Cluster URL
+- **GOOGLE_MAP_API_KEY** - Google Maps API Key (Geocoding API)
 
 ### You can run app with npm
 - npm run watch

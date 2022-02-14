@@ -7,7 +7,7 @@ Sample project demonstrating React SPA application.
 - [react-router](https://reactrouter.com/)
 
 ### Please export environment variables
-- **GOOGLE_MAP_API_KEY** - Google Maps api key (Maps JavaScript API)
+- **GOOGLE_MAP_API_KEY** - Google Maps API Key (Maps JavaScript API)
 
 ### You can run app with npm
 - npm run start
