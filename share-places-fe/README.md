@@ -6,8 +6,8 @@ Sample project demonstrating React SPA application.
 - [react](https://reactjs.org/)
 - [react-router](https://reactrouter.com/)
 
-### Please export env vars
-- **GOOGLE_MAP_API_KEY** - Google map sdk api key
+### Please export environment variables
+- **GOOGLE_MAP_API_KEY** - Google Maps api key (Maps JavaScript API)
 
 ### You can run app with npm
 - npm run start
