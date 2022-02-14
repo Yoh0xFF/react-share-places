@@ -8,6 +8,6 @@ Sample application demonstrating React SPA.
 ### You can run app with docker compose
 - docker compose up front-end
 
-### App url
+### App URL
 - front-end - http://localhost:3000
 - back-end - http://localhost:8080

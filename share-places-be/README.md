@@ -13,5 +13,5 @@ Sample project demonstrating REST CRUD API using express and mongoose.
 ### You can run app with npm
 - npm run watch
 
-### App url
+### App URL
 - http://localhost:8080

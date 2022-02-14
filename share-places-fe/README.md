@@ -12,5 +12,5 @@ Sample project demonstrating React SPA application.
 ### You can run app with npm
 - npm run start
 
-### App url
+### App URL
 - http://localhost:3000
