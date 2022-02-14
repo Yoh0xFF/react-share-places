@@ -36,7 +36,7 @@ export default function UpdatePlace(): JSX.Element {
     const fetchPlace = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:8080/api/places/${placeId}`
+          `${process.env.REACT_APP_API_URL}/places/${placeId}`
         );
 
         setPlace(responseData.place);
@@ -70,7 +70,7 @@ export default function UpdatePlace(): JSX.Element {
 
     try {
       await sendRequest(
-        `http://localhost:8080/api/places/${placeId}`,
+        `${process.env.REACT_APP_API_URL}/places/${placeId}`,
         'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,

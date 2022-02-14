@@ -50,9 +50,14 @@ export default function NewPlace(): JSX.Element {
       formData.append('address', formState.inputs.address.value as string);
       formData.append('image', formState.inputs.image.value as File);
 
-      await sendRequest('http://localhost:8080/api/places', 'POST', formData, {
-        Authorization: `Bearer ${auth.token}`,
-      });
+      await sendRequest(
+        `${process.env.REACT_APP_API_URL}/places`,
+        'POST',
+        formData,
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
 
       setIsSaved(true);
     } catch (error) {

@@ -46,7 +46,7 @@ export default function Auth(): JSX.Element {
     try {
       if (isLoginMode) {
         const responseData = await sendRequest(
-          'http://localhost:8080/api/users/login',
+          `${process.env.REACT_APP_API_URL}/users/login`,
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
@@ -69,7 +69,7 @@ export default function Auth(): JSX.Element {
         formData.append('image', formState.inputs.image.value as File);
 
         const responseData = await sendRequest(
-          'http://localhost:8080/api/users/signup',
+          `${process.env.REACT_APP_API_URL}/users/signup`,
           'POST',
           formData,
           {}

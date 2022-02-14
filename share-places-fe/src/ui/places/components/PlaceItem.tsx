@@ -33,7 +33,7 @@ export default function PlaceItem(props: PlaceItemProps): JSX.Element {
 
     try {
       await sendRequest(
-        `http://localhost:8080/api/places/${place.id}`,
+        `${process.env.REACT_APP_API_URL}/places/${place.id}`,
         'DELETE',
         null,
         {

@@ -18,7 +18,7 @@ export default function UserPlaces(): JSX.Element {
     const fetchPlaces = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:8080/api/places/user/${userId}`
+          `${process.env.REACT_APP_API_URL}/places/user/${userId}`
         );
 
         setPlaces(responseData.places);

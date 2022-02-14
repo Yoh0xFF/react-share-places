@@ -14,7 +14,7 @@ function Users(): JSX.Element {
     const fetchUsers = async () => {
       try {
         const responseData = await sendRequest(
-          'http://localhost:8080/api/users'
+          `${process.env.REACT_APP_API_URL}/users`
         );
         setUsers(responseData.users as Array<User>);
       } catch (error: any) {
