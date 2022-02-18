@@ -1,6 +1,8 @@
 {
   "name": "share-places",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "author": "Ioram Gordadze",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "start": "react-app-rewired start",

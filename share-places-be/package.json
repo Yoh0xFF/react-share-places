@@ -1,15 +1,14 @@
 {
   "name": "share-places-be",
   "version": "1.0.0",
-  "description": "",
+  "author": "Ioram Gordadze",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "watch": "ts-node-dev ./src/server.ts",
     "build": "tsc && copyfiles -u 1 src/**/*.hbs dist/",
     "serve": "npm run build && node dist/server.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "axios": "^0.25.0",
     "bcryptjs": "^2.4.3",
