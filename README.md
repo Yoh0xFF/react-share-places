@@ -9,7 +9,9 @@ Sample application demonstrating React SPA.
 
 ### You can run app with docker compose
 
-- docker compose up front-end
+- **start** - docker-compose up
+- **start in background** - docker-compose up -d
+- **stop** - docker-compose down
 
 ### App URL
 

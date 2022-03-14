@@ -21,7 +21,7 @@ services:
     ports:
       - "8080:8080"
     entrypoint: npm
-    command: ["run", "watch"]
+    command: ["run", "start"]
     volumes:
       - ./share-places-be:/var/app
       - ~/uploads:/root/uploads
