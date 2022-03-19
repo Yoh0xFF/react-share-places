@@ -2,19 +2,19 @@
 
 Sample project demonstrating React SPA application.
 
-### Used core libraries
+## Used core libraries
 
 - [react](https://reactjs.org/)
 - [react-router](https://reactrouter.com/)
 
-### Please export environment variables
+## Please export environment variables
 
 - **GOOGLE_MAP_API_KEY** - Google Maps API Key (Maps JavaScript API)
 
-### You can run app with npm
+## You can run app with npm
 
 - npm run start
 
-### App URL
+## App URL
 
-- http://localhost:3000
+- <http://localhost:3000>

@@ -2,7 +2,7 @@
 
 Sample project demonstrating REST CRUD API using express and mongoose.
 
-### Used core libraries
+## Used core libraries
 
 - [express](https://expressjs.com/)
 - [mongoose](https://mongoosejs.com/)
@@ -12,10 +12,10 @@ Sample project demonstrating REST CRUD API using express and mongoose.
 - **MONGODB_URL** - MongoDB Atlas Cluster URL
 - **GOOGLE_MAP_API_KEY** - Google Maps API Key (Geocoding API)
 
-### You can run app with npm
+## You can run app with npm
 
 - npm run start
 
-### App URL
+## App URL
 
-- http://localhost:8080
+- <http://localhost:8080>
