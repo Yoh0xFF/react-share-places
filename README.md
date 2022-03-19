@@ -1,4 +1,4 @@
-# share-places
+# Share Places
 
 Sample application demonstrating React SPA.
 
